@@ -37,36 +37,152 @@ export default function ImpactPage() {
   const handlePrint = () => window.print();
 
   const handleDownloadPDF = async () => {
-    if (!reportRef.current) return;
+    if (!report) return;
     setPdfLoading(true);
     try {
-      const html2canvas = (await import("html2canvas")).default;
       const { jsPDF } = await import("jspdf");
-      const element = reportRef.current;
-      const canvas = await html2canvas(element, {
-        scale: 2,
-        backgroundColor: "#0a0a14",
-        useCORS: true,
-      });
-      const imgData = canvas.toDataURL("image/png");
       const pdf = new jsPDF("p", "mm", "a4");
-      const pageWidth = pdf.internal.pageSize.getWidth();
-      const pageHeight = pdf.internal.pageSize.getHeight();
-      const imgWidth = pageWidth - 20;
-      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+      const w = pdf.internal.pageSize.getWidth();
+      const margin = 20;
+      const textW = w - margin * 2;
+      let y = 20;
 
-      let heightLeft = imgHeight;
-      let position = 10;
+      const checkPage = (needed) => {
+        if (y + needed > 275) { pdf.addPage(); y = 20; }
+      };
 
-      pdf.addImage(imgData, "PNG", 10, position, imgWidth, imgHeight);
-      heightLeft -= pageHeight;
+      const addText = (text, size, style, color) => {
+        pdf.setFontSize(size);
+        pdf.setFont("helvetica", style || "normal");
+        pdf.setTextColor(color || "#2c2416");
+        const lines = pdf.splitTextToSize(text, textW);
+        checkPage(lines.length * size * 0.45 + 4);
+        pdf.text(lines, margin, y);
+        y += lines.length * size * 0.45 + 4;
+      };
 
-      while (heightLeft > 0) {
-        position = heightLeft - imgHeight + 10;
-        pdf.addPage();
-        pdf.addImage(imgData, "PNG", 10, position, imgWidth, imgHeight);
-        heightLeft -= pageHeight;
-      }
+      const addLine = () => {
+        checkPage(8);
+        pdf.setDrawColor("#d4d4d4");
+        pdf.line(margin, y, w - margin, y);
+        y += 6;
+      };
+
+      const addMetric = (label, value) => {
+        checkPage(10);
+        pdf.setFontSize(10);
+        pdf.setFont("helvetica", "normal");
+        pdf.setTextColor("#6b5e50");
+        pdf.text(label, margin, y);
+        pdf.setFont("helvetica", "bold");
+        pdf.setTextColor("#2c2416");
+        pdf.text(String(value), w - margin, y, { align: "right" });
+        y += 7;
+      };
+
+      const addLink = (text, url) => {
+        checkPage(10);
+        pdf.setFontSize(9);
+        pdf.setFont("helvetica", "normal");
+        pdf.setTextColor("#2d6a4f");
+        pdf.textWithLink(text, margin, y, { url });
+        y += 6;
+      };
+
+      // Title
+      pdf.setFontSize(22);
+      pdf.setFont("helvetica", "bold");
+      pdf.setTextColor("#2d6a4f");
+      pdf.text(report.orgName, margin, y);
+      y += 10;
+
+      addText(`Environmental Impact Report — ${new Date().toLocaleDateString()}`, 10, "normal", "#6b5e50");
+      y += 4;
+      addLine();
+
+      // Executive Summary
+      addText("Executive Summary", 14, "bold");
+      y += 2;
+      const summary = `${report.orgName}, located in ${report.site.coords.city}, ${report.site.coords.state} (ZIP ${report.site.zip}), operates in an area with a climate vulnerability score of ${report.site.score.grade} (${report.site.score.score}/100). Compared to the nearby area of ${report.nearby.coords.city} (ZIP ${report.nearby.zip}), which scores ${report.nearby.score.grade} (${report.nearby.score.score}/100), ${
+        report.site.score.score < report.nearby.score.score
+          ? `the presence of green infrastructure at ${report.orgName} correlates with a ${report.nearby.score.score - report.site.score.score}-point improvement in climate vulnerability.`
+          : `both areas face similar climate challenges, underscoring the need for continued green infrastructure investment.`
+      }`;
+      addText(summary, 10, "normal", "#6b5e50");
+      y += 4;
+      addLine();
+
+      // Site comparison
+      addText("Environmental Comparison", 14, "bold");
+      y += 4;
+
+      addText(`Your Site — ${report.site.coords.city}, ${report.site.coords.state}`, 11, "bold", "#2d6a4f");
+      y += 2;
+      addMetric("Climate Score", `${report.site.score.grade} (${report.site.score.score}/100)`);
+      addMetric("Air Quality", `${report.site.aqi.aqi} AQI (${report.site.aqi.category})`);
+      addMetric("Temperature", `${report.site.weather?.currentTemp}°F (feels like ${report.site.weather?.feelsLike}°F)`);
+      addMetric("Heat Risk", report.site.weather?.heatRisk?.level || "N/A");
+      addMetric("Flood Risk", report.site.weather?.floodRisk?.level || "N/A");
+      y += 4;
+
+      addText(`Comparison Area — ${report.nearby.coords.city}, ${report.nearby.coords.state}`, 11, "bold", "#bc6c25");
+      y += 2;
+      addMetric("Climate Score", `${report.nearby.score.grade} (${report.nearby.score.score}/100)`);
+      addMetric("Air Quality", `${report.nearby.aqi.aqi} AQI (${report.nearby.aqi.category})`);
+      addMetric("Temperature", `${report.nearby.weather?.currentTemp}°F (feels like ${report.nearby.weather?.feelsLike}°F)`);
+      addMetric("Heat Risk", report.nearby.weather?.heatRisk?.level || "N/A");
+      addMetric("Flood Risk", report.nearby.weather?.floodRisk?.level || "N/A");
+      y += 4;
+      addLine();
+
+      // Key findings
+      addText("Key Findings", 14, "bold");
+      y += 2;
+
+      addText("Temperature Impact", 11, "bold");
+      const tempText = report.site.weather && report.nearby.weather
+        ? `Your site area currently measures ${report.site.weather.currentTemp}°F compared to ${report.nearby.weather.currentTemp}°F in the comparison area. `
+        : "";
+      addText(tempText + "Research shows that urban green spaces can reduce surrounding temperatures by 2-10°F through shade and evapotranspiration. A single mature tree provides approximately $7,000 worth of air quality and stormwater management over its lifetime.", 9, "normal", "#6b5e50");
+      y += 3;
+
+      addText("Air Quality Impact", 11, "bold");
+      addText(`Your site area has an AQI of ${report.site.aqi.aqi} (${report.site.aqi.category}) vs ${report.nearby.aqi.aqi} (${report.nearby.aqi.category}) in the comparison area. Trees and vegetation filter particulate matter, absorb gaseous pollutants, and produce oxygen. The health cost of air pollution in the US is estimated at $150 billion annually.`, 9, "normal", "#6b5e50");
+      y += 3;
+
+      addText("Stormwater Management", 11, "bold");
+      addText("Green spaces absorb rainfall, reducing flood risk and preventing stormwater overflow into waterways. One inch of floodwater can cause $25,000 in property damage. Green infrastructure is a cost-effective alternative to gray infrastructure for flood mitigation.", 9, "normal", "#6b5e50");
+      y += 4;
+      addLine();
+
+      // For funders
+      addText("For Funders & Grant Reviewers", 14, "bold");
+      y += 2;
+      addText(`This report demonstrates that ${report.orgName}'s green space provides measurable environmental benefits to its surrounding community. Investment in green infrastructure is not merely aesthetic — it is public health infrastructure, climate adaptation, and environmental justice work. Continued funding ensures these benefits persist and expand to serve the community.`, 10, "normal", "#6b5e50");
+      y += 4;
+      addLine();
+
+      // Grant links
+      addText("Relevant Funding Opportunities", 14, "bold");
+      y += 2;
+      addLink("EPA Environmental Justice Small Grants — epa.gov/arp", "https://www.epa.gov/arp/environmental-justice-small-grants-program");
+      addLink("EPA Thriving Communities Grantmaking — epa.gov/environmentaljustice", "https://www.epa.gov/environmentaljustice/environmental-justice-thriving-communities-grantmaking-program");
+      addLink("USDA Urban & Community Forestry — fs.usda.gov", "https://www.fs.usda.gov/managing-land/urban-forests/ucf");
+      addLink("NOAA Coastal Resilience Funding — coast.noaa.gov/funding", "https://www.coast.noaa.gov/funding/");
+      y += 4;
+
+      // Cross-reference
+      addText("Strengthen this report by cross-referencing with:", 10, "bold");
+      y += 1;
+      addLink("U.S. Climate Vulnerability Index — climatevulnerabilityindex.org", "https://climatevulnerabilityindex.org/");
+      addLink("EPA EJScreen — epa.gov/ejscreen", "https://www.epa.gov/ejscreen");
+      addLink("CEJST — screeningtool.geoplatform.gov", "https://screeningtool.geoplatform.gov/");
+      y += 6;
+
+      // Footer
+      addLine();
+      addText("Data sourced from: EPA AirNow, NOAA/ECMWF via Open-Meteo, FEMA National Risk Index.", 8, "normal", "#9e9182");
+      addText("Report generated by Climate Lens — climatelens.org", 8, "normal", "#9e9182");
 
       pdf.save(`${report.orgName.replace(/\s+/g, "-")}-Impact-Report.pdf`);
     } catch (err) {
@@ -209,10 +325,10 @@ export default function ImpactPage() {
               <h3 style={{ marginBottom: 12 }}>Relevant Funding Opportunities</h3>
               <p style={{ color: "var(--text-muted)", fontSize: "0.9rem", marginBottom: 16 }}>Attach this report when applying to these programs:</p>
               {[
-                { name: "EPA Environmental Justice Grants", url: "https://www.epa.gov/environmentaljustice/environmental-justice-grants-funding-and-technical-assistance", desc: "Federal grants for community-based EJ projects" },
-                { name: "USDA Urban & Community Forestry Grants", url: "https://www.fs.usda.gov/managing-land/urban-forests/ucf", desc: "Funding for tree planting and green infrastructure" },
-                { name: "NOAA Climate Resilience Grants", url: "https://www.noaa.gov/climate-funding", desc: "Competitive grants for climate adaptation projects" },
-                { name: "National Recreation Foundation", url: "https://nationalrecreation.org/", desc: "Grants for parks, recreation, and conservation" },
+                { name: "EPA Environmental Justice Small Grants", url: "https://www.epa.gov/arp/environmental-justice-small-grants-program", desc: "Federal grants for community-based EJ projects" },
+                { name: "EPA Thriving Communities Grantmaking", url: "https://www.epa.gov/environmentaljustice/environmental-justice-thriving-communities-grantmaking-program", desc: "Subgrants $75K-$350K for nonprofits and local governments" },
+                { name: "USDA Urban & Community Forestry", url: "https://www.fs.usda.gov/managing-land/urban-forests/ucf", desc: "$1B+ in tree planting and urban forest grants" },
+                { name: "NOAA Coastal Resilience Funding", url: "https://www.coast.noaa.gov/funding/", desc: "Grants for climate resilience in coastal communities" },
               ].map((grant) => (
                 <a key={grant.name} href={grant.url} target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none", display: "block" }}>
                   <div className="metric-row" style={{ cursor: "pointer" }}>
