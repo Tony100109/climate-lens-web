@@ -7,7 +7,7 @@ export default function Nav() {
 
   return (
     <nav className="nav">
-      <Link href="/" className="nav-logo">🌿 Climate Lens</Link>
+      <Link href="/" className="nav-logo">Climate Lens</Link>
       <button className="nav-mobile-toggle" onClick={() => setOpen(!open)} aria-label="Toggle menu">
         {open ? "✕" : "☰"}
       </button>

@@ -18,134 +18,145 @@ export default function Home() {
   return (
     <div className="page">
       <div className="container">
-        <div className="hero">
-          <h1>
-            The Climate Data <span>Already Exists.</span><br />
-            Nobody Can Use It.
+
+        {/* Hero — simple, no fluff */}
+        <div style={{ padding: "64px 0 40px", maxWidth: 620 }}>
+          <h1 style={{ fontSize: "2.6rem", fontWeight: 800, lineHeight: 1.15, marginBottom: 16 }}>
+            Your neighborhood's climate data,<br />
+            in a format you can actually use.
           </h1>
-          <p>
-            Government tools like EJScreen and the Climate Vulnerability Index have the data.
-            Climate Lens makes it usable — turning it into grant reports for conservatories,
-            lesson plans for teachers, and advocacy tools for nonprofits. For free.
+          <p style={{ color: "var(--text-muted)", fontSize: "1.05rem", lineHeight: 1.7, marginBottom: 28 }}>
+            The EPA, NOAA, and FEMA collect incredible environmental data. But try using it
+            to write a grant, plan a lesson, or email your city council — you can't. It's
+            buried in databases built for researchers. Climate Lens pulls it out and turns it
+            into something useful.
           </p>
-          <form onSubmit={handleSearch} className="search-box">
+          <form onSubmit={handleSearch} style={{ display: "flex", gap: 10, maxWidth: 400 }}>
             <input
-              className="input input-large"
-              placeholder="ZIP code"
+              className="input"
+              style={{ fontSize: "1.1rem", letterSpacing: 3, fontWeight: 600, textAlign: "center" }}
+              placeholder="Enter ZIP"
               value={zip}
               onChange={(e) => setZip(e.target.value.replace(/[^0-9]/g, "").slice(0, 5))}
               maxLength={5}
             />
-            <button type="submit" className="btn btn-primary btn-large">
-              Search
+            <button type="submit" className="btn btn-primary" style={{ whiteSpace: "nowrap" }}>
+              Look up
             </button>
           </form>
         </div>
 
-        <div className="section">
-          <h2 className="section-title" style={{ textAlign: "center" }}>Built for organizations doing the work</h2>
-          <div className="feature-grid">
-            <div className="card feature-card">
-              <div className="feature-icon">🌿</div>
-              <h3>Botanical Gardens & Conservatories</h3>
-              <p>Show funders that your green space measurably reduces surrounding temperatures and improves air quality. Generate impact reports for grants.</p>
-            </div>
-            <div className="card feature-card">
-              <div className="feature-icon">🏛️</div>
-              <h3>Environmental Nonprofits</h3>
-              <p>Access hyperlocal climate data to support your advocacy. Compare underserved neighborhoods to wealthy ones with real numbers.</p>
-            </div>
-            <div className="card feature-card">
-              <div className="feature-icon">📚</div>
-              <h3>Educators & Schools</h3>
-              <p>Use our classroom toolkit to teach environmental justice with your students' own neighborhoods as the textbook.</p>
-            </div>
-          </div>
-        </div>
+        {/* What this actually does — varied layout, not a grid of identical cards */}
+        <div style={{ marginTop: 56 }}>
+          <h2 style={{ fontSize: "1.1rem", color: "var(--text-dim)", textTransform: "uppercase", letterSpacing: 1, marginBottom: 24 }}>Tools</h2>
 
-        <div className="section">
-          <h2 className="section-title" style={{ textAlign: "center" }}>What you can do</h2>
-          <div className="grid-3">
+          {/* Primary tools — bigger */}
+          <div className="grid-2" style={{ marginBottom: 16 }}>
             <Link href="/lookup" className="card card-hover" style={{ textDecoration: "none" }}>
-              <h3 style={{ marginBottom: 8 }}>🔍 Climate Lookup</h3>
-              <p style={{ color: "var(--text-muted)", fontSize: "0.9rem" }}>Search any ZIP code for real-time air quality, temperature, heat risk, and vulnerability score.</p>
+              <h3 style={{ marginBottom: 6, color: "var(--text)" }}>Climate Lookup</h3>
+              <p style={{ color: "var(--text-muted)", fontSize: "0.9rem" }}>
+                Real-time air quality, heat risk, 10-year temperature trends, EPA environmental justice
+                data, and 1930s redlining history — all from one ZIP code search.
+              </p>
             </Link>
             <Link href="/compare" className="card card-hover" style={{ textDecoration: "none" }}>
-              <h3 style={{ marginBottom: 8 }}>⚖️ Compare Areas</h3>
-              <p style={{ color: "var(--text-muted)", fontSize: "0.9rem" }}>Put two neighborhoods side by side. Expose environmental inequality with data.</p>
+              <h3 style={{ marginBottom: 6, color: "var(--text)" }}>Compare Two Areas</h3>
+              <p style={{ color: "var(--text-muted)", fontSize: "0.9rem" }}>
+                Beverly Hills vs South LA. Lincoln Park vs Englewood. See exactly how environmental
+                quality differs between neighborhoods — and why.
+              </p>
             </Link>
+          </div>
+
+          {/* Grant tools */}
+          <div className="grid-3" style={{ marginBottom: 16 }}>
             <Link href="/impact" className="card card-hover" style={{ textDecoration: "none" }}>
-              <h3 style={{ marginBottom: 8 }}>📊 Green Impact Report</h3>
-              <p style={{ color: "var(--text-muted)", fontSize: "0.9rem" }}>Generate a data-backed report showing your garden or park's measurable climate impact.</p>
+              <h3 style={{ marginBottom: 6, fontSize: "1rem", color: "var(--text)" }}>Impact Report</h3>
+              <p style={{ color: "var(--text-muted)", fontSize: "0.85rem" }}>
+                Generate a PDF comparing your site's environmental data to surrounding areas. Built for grant applications.
+              </p>
             </Link>
             <Link href="/health-cost" className="card card-hover" style={{ textDecoration: "none" }}>
-              <h3 style={{ marginBottom: 8 }}>💰 Health Cost Calculator</h3>
-              <p style={{ color: "var(--text-muted)", fontSize: "0.9rem" }}>Estimate the annual health and energy costs from pollution and heat — and what trees would save.</p>
+              <h3 style={{ marginBottom: 6, fontSize: "1rem", color: "var(--text)" }}>Health Cost Calculator</h3>
+              <p style={{ color: "var(--text-muted)", fontSize: "0.85rem" }}>
+                Estimated annual health costs from local pollution and heat. Shows what trees would save in dollars.
+              </p>
             </Link>
             <Link href="/tree-calculator" className="card card-hover" style={{ textDecoration: "none" }}>
-              <h3 style={{ marginBottom: 8 }}>🌳 Tree Impact Calculator</h3>
-              <p style={{ color: "var(--text-muted)", fontSize: "0.9rem" }}>Calculate how many trees you need, their CO2 impact, and get ready-to-use grant language.</p>
+              <h3 style={{ marginBottom: 6, fontSize: "1rem", color: "var(--text)" }}>Tree Calculator</h3>
+              <p style={{ color: "var(--text-muted)", fontSize: "0.85rem" }}>
+                How many trees, how much CO2, what ROI. Generates copy-paste grant language with your numbers.
+              </p>
             </Link>
+          </div>
+
+          {/* Education + Action */}
+          <div className="grid-3">
             <Link href="/learn" className="card card-hover" style={{ textDecoration: "none" }}>
-              <h3 style={{ marginBottom: 8 }}>📖 Learn</h3>
-              <p style={{ color: "var(--text-muted)", fontSize: "0.9rem" }}>Educational articles explaining AQI, heat islands, environmental justice, and what the data means.</p>
+              <h3 style={{ marginBottom: 6, fontSize: "1rem", color: "var(--text)" }}>Learn</h3>
+              <p style={{ color: "var(--text-muted)", fontSize: "0.85rem" }}>
+                What is AQI? What's a heat island? Why does redlining still matter? Plain-English explainers.
+              </p>
             </Link>
             <Link href="/classroom" className="card card-hover" style={{ textDecoration: "none" }}>
-              <h3 style={{ marginBottom: 8 }}>🎓 Classroom Toolkit</h3>
-              <p style={{ color: "var(--text-muted)", fontSize: "0.9rem" }}>Lesson plans and activities that use local climate data to teach environmental justice.</p>
+              <h3 style={{ marginBottom: 6, fontSize: "1rem", color: "var(--text)" }}>Classroom Toolkit</h3>
+              <p style={{ color: "var(--text-muted)", fontSize: "0.85rem" }}>
+                Lesson plans for grades 6-12. Students compare their own neighborhoods. No prep needed.
+              </p>
             </Link>
             <Link href="/action" className="card card-hover" style={{ textDecoration: "none" }}>
-              <h3 style={{ marginBottom: 8 }}>📢 Take Action</h3>
-              <p style={{ color: "var(--text-muted)", fontSize: "0.9rem" }}>Find elected officials, send data-backed letters, get talking points for city council.</p>
+              <h3 style={{ marginBottom: 6, fontSize: "1rem", color: "var(--text)" }}>Take Action</h3>
+              <p style={{ color: "var(--text-muted)", fontSize: "0.85rem" }}>
+                Find your reps. Get a pre-written email with your area's data. Share on social media.
+              </p>
             </Link>
           </div>
         </div>
 
-        {/* How we're different */}
-        <div className="section">
-          <h2 className="section-title" style={{ textAlign: "center" }}>The data exists. The tools don't.</h2>
-          <p style={{ color: "var(--text-muted)", textAlign: "center", maxWidth: 650, margin: "0 auto 24px" }}>
-            Government agencies have built powerful climate databases. But they're designed for researchers, not for the people who need them most.
+        {/* The gap — honest, not salesy */}
+        <div style={{ marginTop: 64, maxWidth: 640 }}>
+          <h2 style={{ fontSize: "1.1rem", color: "var(--text-dim)", textTransform: "uppercase", letterSpacing: 1, marginBottom: 20 }}>Why this exists</h2>
+
+          <p style={{ color: "var(--text-muted)", lineHeight: 1.8, marginBottom: 20 }}>
+            There are already good climate data tools. The EPA's <a href="https://www.epa.gov/ejscreen" target="_blank" rel="noopener noreferrer">EJScreen</a> has
+            detailed environmental justice data. The <a href="https://climatevulnerabilityindex.org/" target="_blank" rel="noopener noreferrer">Climate Vulnerability Index</a> combines
+            184 datasets. The White House's <a href="https://screeningtool.geoplatform.gov/" target="_blank" rel="noopener noreferrer">CEJST</a> determines where federal funding goes.
           </p>
-          <div className="grid-2">
-            <div className="card">
-              <h4 style={{ color: "var(--text-muted)", fontSize: "0.8rem", textTransform: "uppercase", marginBottom: 12 }}>What already exists</h4>
-              <div className="metric-row"><span className="metric-label">EPA EJScreen</span><span style={{ color: "var(--text-dim)", fontSize: "0.85rem" }}>Raw data, complex interface</span></div>
-              <div className="metric-row"><span className="metric-label">Climate Vulnerability Index</span><span style={{ color: "var(--text-dim)", fontSize: "0.85rem" }}>184 datasets, research-focused</span></div>
-              <div className="metric-row"><span className="metric-label">CEJST (White House)</span><span style={{ color: "var(--text-dim)", fontSize: "0.85rem" }}>Federal funding decisions</span></div>
-              <p style={{ color: "var(--text-dim)", fontSize: "0.85rem", marginTop: 12 }}>These tools are powerful but built for policy analysts and researchers — not for a garden director writing a grant, a teacher planning a lesson, or a resident going to city council.</p>
-            </div>
-            <div className="card" style={{ borderColor: "var(--primary)" }}>
-              <h4 style={{ color: "var(--primary)", fontSize: "0.8rem", textTransform: "uppercase", marginBottom: 12 }}>What Climate Lens adds</h4>
-              <div className="metric-row"><span className="metric-label">Impact Reports</span><span style={{ color: "var(--accent-green)", fontSize: "0.85rem" }}>Print-ready for grant applications</span></div>
-              <div className="metric-row"><span className="metric-label">Classroom Toolkit</span><span style={{ color: "var(--accent-green)", fontSize: "0.85rem" }}>Ready-to-use lesson plans</span></div>
-              <div className="metric-row"><span className="metric-label">Advocacy Tools</span><span style={{ color: "var(--accent-green)", fontSize: "0.85rem" }}>Pre-written emails with local data</span></div>
-              <div className="metric-row"><span className="metric-label">Neighborhood Compare</span><span style={{ color: "var(--accent-green)", fontSize: "0.85rem" }}>Side-by-side inequality evidence</span></div>
-              <p style={{ color: "var(--text-muted)", fontSize: "0.85rem", marginTop: 12 }}>We take the same public data and turn it into something a conservatory can attach to a grant, a teacher can use tomorrow, and a resident can bring to city hall.</p>
-            </div>
+
+          <p style={{ color: "var(--text-muted)", lineHeight: 1.8, marginBottom: 20 }}>
+            But none of them generate a report a garden director can attach to a grant application.
+            None of them have lesson plans a teacher can use tomorrow. None of them write an email
+            a resident can send to city council tonight. They have the data — they just don't have
+            the last mile.
+          </p>
+
+          <p style={{ color: "var(--text-muted)", lineHeight: 1.8 }}>
+            That's what Climate Lens does. Same public data, different output. Grant reports, classroom
+            activities, advocacy templates, tree ROI calculations. The stuff people actually need when
+            they're trying to protect their community's environment.
+          </p>
+        </div>
+
+        {/* Who it's for — just a list, not cards */}
+        <div style={{ marginTop: 48, maxWidth: 640 }}>
+          <h2 style={{ fontSize: "1.1rem", color: "var(--text-dim)", textTransform: "uppercase", letterSpacing: 1, marginBottom: 20 }}>Who this is for</h2>
+          <div style={{ color: "var(--text-muted)", lineHeight: 2, fontSize: "0.95rem" }}>
+            <p><strong style={{ color: "var(--text)" }}>Conservatories and botanical gardens</strong> — prove your environmental value to funders with real data instead of anecdotes.</p>
+            <p style={{ marginTop: 8 }}><strong style={{ color: "var(--text)" }}>Small environmental nonprofits</strong> — back up your advocacy with EPA and NOAA numbers, not just passion.</p>
+            <p style={{ marginTop: 8 }}><strong style={{ color: "var(--text)" }}>Teachers</strong> — teach climate justice using your students' own neighborhoods. Open the site and go.</p>
+            <p style={{ marginTop: 8 }}><strong style={{ color: "var(--text)" }}>Anyone going to a city council meeting</strong> — show up with data, a comparison, and a specific ask.</p>
           </div>
         </div>
 
-        {/* Why this exists */}
-        <div className="section" style={{ maxWidth: 700 }}>
-          <h2 className="section-title">Why this exists</h2>
-          <p style={{ color: "var(--text-muted)", lineHeight: 1.8, marginBottom: 16 }}>
-            The U.S. government spends millions collecting environmental data through the EPA, NOAA, and FEMA.
-            Tools like EJScreen, the Climate Vulnerability Index, and CEJST make that data publicly available.
-            But there's a gap between having data and being able to use it.
-          </p>
-          <p style={{ color: "var(--text-muted)", lineHeight: 1.8, marginBottom: 16 }}>
-            A botanical garden director shouldn't need a data science degree to prove their green space
-            reduces surrounding temperatures. A teacher shouldn't need to navigate federal databases to
-            show students that their neighborhood has worse air quality than one 3 miles away. A resident
-            shouldn't need to write a research paper to tell their city council that their block needs more trees.
-          </p>
-          <p style={{ color: "var(--text-muted)", lineHeight: 1.8 }}>
-            Climate Lens is the translator. We pull real-time data from the same sources the government uses
-            and package it into the formats people actually need: grant reports, lesson plans, comparison charts,
-            and advocacy letters. The data already exists — we just make it work for the people doing the work.
+        {/* Data sources — transparency */}
+        <div style={{ marginTop: 48, paddingTop: 32, borderTop: "1px solid var(--border)", maxWidth: 640 }}>
+          <p style={{ color: "var(--text-dim)", fontSize: "0.8rem", lineHeight: 1.8 }}>
+            All data comes from free public APIs: EPA AirNow, EPA EJScreen, NOAA/ECMWF weather data via Open-Meteo,
+            Open-Meteo Air Quality, FEMA National Risk Index, and the University of Richmond's Mapping Inequality
+            project for historical redlining data. Climate Lens is open source and free to use.
           </p>
         </div>
+
       </div>
     </div>
   );
