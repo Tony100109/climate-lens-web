@@ -20,11 +20,13 @@ export default function Home() {
       <div className="container">
         <div className="hero">
           <h1>
-            Prove Your <span>Green Impact</span> With Real Data
+            The Climate Data <span>Already Exists.</span><br />
+            Nobody Can Use It.
           </h1>
           <p>
-            Climate Lens helps conservatories, botanical gardens, and environmental nonprofits
-            demonstrate their measurable climate impact — backed by EPA, NOAA, and FEMA data.
+            Government tools like EJScreen and the Climate Vulnerability Index have the data.
+            Climate Lens makes it usable — turning it into grant reports for conservatories,
+            lesson plans for teachers, and advocacy tools for nonprofits. For free.
           </p>
           <form onSubmit={handleSearch} className="search-box">
             <input
@@ -91,22 +93,49 @@ export default function Home() {
           </div>
         </div>
 
+        {/* How we're different */}
+        <div className="section">
+          <h2 className="section-title" style={{ textAlign: "center" }}>The data exists. The tools don't.</h2>
+          <p style={{ color: "var(--text-muted)", textAlign: "center", maxWidth: 650, margin: "0 auto 24px" }}>
+            Government agencies have built powerful climate databases. But they're designed for researchers, not for the people who need them most.
+          </p>
+          <div className="grid-2">
+            <div className="card">
+              <h4 style={{ color: "var(--text-muted)", fontSize: "0.8rem", textTransform: "uppercase", marginBottom: 12 }}>What already exists</h4>
+              <div className="metric-row"><span className="metric-label">EPA EJScreen</span><span style={{ color: "var(--text-dim)", fontSize: "0.85rem" }}>Raw data, complex interface</span></div>
+              <div className="metric-row"><span className="metric-label">Climate Vulnerability Index</span><span style={{ color: "var(--text-dim)", fontSize: "0.85rem" }}>184 datasets, research-focused</span></div>
+              <div className="metric-row"><span className="metric-label">CEJST (White House)</span><span style={{ color: "var(--text-dim)", fontSize: "0.85rem" }}>Federal funding decisions</span></div>
+              <p style={{ color: "var(--text-dim)", fontSize: "0.85rem", marginTop: 12 }}>These tools are powerful but built for policy analysts and researchers — not for a garden director writing a grant, a teacher planning a lesson, or a resident going to city council.</p>
+            </div>
+            <div className="card" style={{ borderColor: "var(--primary)" }}>
+              <h4 style={{ color: "var(--primary)", fontSize: "0.8rem", textTransform: "uppercase", marginBottom: 12 }}>What Climate Lens adds</h4>
+              <div className="metric-row"><span className="metric-label">Impact Reports</span><span style={{ color: "var(--accent-green)", fontSize: "0.85rem" }}>Print-ready for grant applications</span></div>
+              <div className="metric-row"><span className="metric-label">Classroom Toolkit</span><span style={{ color: "var(--accent-green)", fontSize: "0.85rem" }}>Ready-to-use lesson plans</span></div>
+              <div className="metric-row"><span className="metric-label">Advocacy Tools</span><span style={{ color: "var(--accent-green)", fontSize: "0.85rem" }}>Pre-written emails with local data</span></div>
+              <div className="metric-row"><span className="metric-label">Neighborhood Compare</span><span style={{ color: "var(--accent-green)", fontSize: "0.85rem" }}>Side-by-side inequality evidence</span></div>
+              <p style={{ color: "var(--text-muted)", fontSize: "0.85rem", marginTop: 12 }}>We take the same public data and turn it into something a conservatory can attach to a grant, a teacher can use tomorrow, and a resident can bring to city hall.</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Why this exists */}
         <div className="section" style={{ maxWidth: 700 }}>
           <h2 className="section-title">Why this exists</h2>
           <p style={{ color: "var(--text-muted)", lineHeight: 1.8, marginBottom: 16 }}>
-            Government agencies collect enormous amounts of environmental data — air quality from the EPA,
-            weather from NOAA, disaster risk from FEMA. But this data is buried in databases that
-            require technical expertise to access.
+            The U.S. government spends millions collecting environmental data through the EPA, NOAA, and FEMA.
+            Tools like EJScreen, the Climate Vulnerability Index, and CEJST make that data publicly available.
+            But there's a gap between having data and being able to use it.
           </p>
           <p style={{ color: "var(--text-muted)", lineHeight: 1.8, marginBottom: 16 }}>
-            The organizations that need this data most — conservatories applying for grants,
-            nonprofits advocating for underserved communities, teachers making climate change tangible —
-            don't have the resources to extract and analyze it.
+            A botanical garden director shouldn't need a data science degree to prove their green space
+            reduces surrounding temperatures. A teacher shouldn't need to navigate federal databases to
+            show students that their neighborhood has worse air quality than one 3 miles away. A resident
+            shouldn't need to write a research paper to tell their city council that their block needs more trees.
           </p>
           <p style={{ color: "var(--text-muted)", lineHeight: 1.8 }}>
-            Climate Lens bridges that gap. Real-time and historical data from free public APIs,
-            presented as impact reports for funders, comparison tools for advocates, and educational
-            resources for classrooms. Free forever. Open source.
+            Climate Lens is the translator. We pull real-time data from the same sources the government uses
+            and package it into the formats people actually need: grant reports, lesson plans, comparison charts,
+            and advocacy letters. The data already exists — we just make it work for the people doing the work.
           </p>
         </div>
       </div>
