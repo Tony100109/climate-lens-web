@@ -1,4 +1,6 @@
+"use client";
 import Link from "next/link";
+import { BookOpen, Scale } from "lucide-react";
 
 const LESSONS = [
   {
@@ -117,11 +119,11 @@ export default function ClassroomPage() {
           <h2 className="section-title">Pair with these resources</h2>
           <div className="grid-2">
             <Link href="/learn" className="card card-hover" style={{ textDecoration: "none" }}>
-              <h3 style={{ marginBottom: 8, color: "var(--text)" }}>📖 Educational Articles</h3>
+              <h3 style={{ marginBottom: 8, color: "var(--text)" }}><BookOpen size={18} style={{ display: "inline", verticalAlign: "middle", marginRight: 6 }} /> Educational Articles</h3>
               <p style={{ color: "var(--text-muted)", fontSize: "0.9rem" }}>Assign as background reading before lessons. Covers AQI, heat islands, EJ, and PM2.5.</p>
             </Link>
             <Link href="/compare" className="card card-hover" style={{ textDecoration: "none" }}>
-              <h3 style={{ marginBottom: 8, color: "var(--text)" }}>⚖️ Compare Tool</h3>
+              <h3 style={{ marginBottom: 8, color: "var(--text)" }}><Scale size={18} style={{ display: "inline", verticalAlign: "middle", marginRight: 6 }} /> Compare Tool</h3>
               <p style={{ color: "var(--text-muted)", fontSize: "0.9rem" }}>Core tool for classroom activities. Pre-loaded with example comparisons to get students started.</p>
             </Link>
           </div>

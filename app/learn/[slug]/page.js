@@ -1,23 +1,23 @@
+"use client";
 import Link from "next/link";
-import { ARTICLES } from "../page";
+import { useParams } from "next/navigation";
+import { ARTICLES, ICON_MAP } from "../page";
 
-export function generateStaticParams() {
-  return ARTICLES.map((a) => ({ slug: a.slug }));
-}
-
-export default async function ArticlePage({ params }) {
-  const { slug } = await params;
+export default function ArticlePage() {
+  const { slug } = useParams();
   const article = ARTICLES.find((a) => a.slug === slug);
   if (!article) return <div className="page"><div className="container"><h1>Article not found</h1></div></div>;
+
+  const Icon = ICON_MAP[article.icon];
 
   return (
     <div className="page">
       <div className="container">
         <div style={{ marginTop: 24, marginBottom: 8 }}>
-          <Link href="/learn" style={{ color: "var(--primary)", fontSize: "0.9rem" }}>← Back to Learn</Link>
+          <Link href="/learn" style={{ color: "var(--primary)", fontSize: "0.9rem" }}>&larr; Back to Learn</Link>
         </div>
         <div className="page-header">
-          <div style={{ fontSize: "3rem", marginBottom: 8 }}>{article.icon}</div>
+          <div style={{ fontSize: "3rem", marginBottom: 8 }}>{Icon ? <Icon size={48} /> : null}</div>
           <h1>{article.title}</h1>
         </div>
         <div className="article">
@@ -28,7 +28,7 @@ export default async function ArticlePage({ params }) {
           })}
         </div>
         <div style={{ marginTop: 32 }}>
-          <Link href="/learn" className="btn btn-secondary">← More Articles</Link>
+          <Link href="/learn" className="btn btn-secondary">&larr; More Articles</Link>
         </div>
       </div>
     </div>

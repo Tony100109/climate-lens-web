@@ -1,10 +1,20 @@
+"use client";
 import Link from "next/link";
+import { Wind, Building2, Scale, Microscope, TreePine } from "lucide-react";
+
+const ICON_MAP = {
+  Wind,
+  Building2,
+  Scale,
+  Microscope,
+  TreePine,
+};
 
 const ARTICLES = [
   {
     slug: "what-is-aqi",
     title: "What is AQI and Why Should You Care?",
-    icon: "💨",
+    icon: "Wind",
     preview: "The Air Quality Index is a number that tells you how clean or polluted your air is. Here's what the numbers actually mean for your health.",
     content: [
       { type: "p", text: "The Air Quality Index (AQI) is a standardized scale from 0 to 500 that the EPA uses to communicate how polluted the air is. It measures five major pollutants: ground-level ozone, particulate matter (PM2.5 and PM10), carbon monoxide, sulfur dioxide, and nitrogen dioxide." },
@@ -23,7 +33,7 @@ const ARTICLES = [
   {
     slug: "heat-islands",
     title: "Urban Heat Islands: Why Your Neighborhood Is Hotter",
-    icon: "🏙️",
+    icon: "Building2",
     preview: "Some neighborhoods are 15-20°F hotter than others just miles away. The reason traces back decades — and green spaces are the solution.",
     content: [
       { type: "p", text: "An urban heat island is an area that's significantly warmer than surrounding rural or green areas. This happens because dark surfaces like asphalt and concrete absorb and re-emit heat, while a lack of vegetation removes the cooling effect of shade and evapotranspiration." },
@@ -38,7 +48,7 @@ const ARTICLES = [
   {
     slug: "environmental-justice",
     title: "Environmental Justice: Why ZIP Code Predicts Health",
-    icon: "⚖️",
+    icon: "Scale",
     preview: "Your ZIP code is a better predictor of your health than your genetic code. Here's why — and what's being done about it.",
     content: [
       { type: "p", text: "Environmental justice is the principle that all people deserve equal protection from environmental hazards, regardless of race, income, or geography. In practice, this principle is violated in nearly every American city." },
@@ -54,7 +64,7 @@ const ARTICLES = [
   {
     slug: "what-is-pm25",
     title: "PM2.5: The Invisible Killer in Your Air",
-    icon: "🔬",
+    icon: "Microscope",
     preview: "Particles 30 times smaller than a human hair that bypass your lungs and enter your bloodstream. What PM2.5 is and why it matters.",
     content: [
       { type: "p", text: "PM2.5 refers to fine particulate matter — tiny particles or droplets in the air that are 2.5 micrometers or smaller in diameter. For perspective, a human hair is about 70 micrometers thick. PM2.5 particles are so small they can penetrate deep into your lungs and enter your bloodstream." },
@@ -69,7 +79,7 @@ const ARTICLES = [
   {
     slug: "trees-climate-infrastructure",
     title: "Trees Are Climate Infrastructure, Not Decoration",
-    icon: "🌳",
+    icon: "TreePine",
     preview: "A single tree provides $7,000 in lifetime environmental services. Here's the economic case for botanical gardens and urban forests.",
     content: [
       { type: "p", text: "We tend to think of trees as aesthetic amenities — nice to have, but not essential. The data tells a different story. Trees are critical infrastructure that provides measurable, quantifiable benefits to public health, climate adaptation, and municipal budgets." },
@@ -121,7 +131,7 @@ export default function LearnPage() {
           <div className="grid-2">
             {ARTICLES.map((article) => (
               <Link key={article.slug} href={`/learn/${article.slug}`} className="card card-hover" style={{ textDecoration: "none" }}>
-                <div style={{ fontSize: "2rem", marginBottom: 8 }}>{article.icon}</div>
+                <div style={{ fontSize: "2rem", marginBottom: 8 }}>{(() => { const Icon = ICON_MAP[article.icon]; return Icon ? <Icon size={32} /> : null; })()}</div>
                 <h3 style={{ marginBottom: 8, color: "var(--text)" }}>{article.title}</h3>
                 <p style={{ color: "var(--text-muted)", fontSize: "0.9rem" }}>{article.preview}</p>
               </Link>
@@ -133,4 +143,4 @@ export default function LearnPage() {
   );
 }
 
-export { ARTICLES };
+export { ARTICLES, ICON_MAP };

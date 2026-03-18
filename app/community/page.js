@@ -20,6 +20,24 @@ function getLocalReports() {
   } catch { return []; }
 }
 
+function compressAndEncode(file) {
+  return new Promise((resolve) => {
+    const canvas = document.createElement("canvas");
+    const img = new Image();
+    img.onload = () => {
+      const maxW = 400;
+      const scale = Math.min(1, maxW / img.width);
+      canvas.width = img.width * scale;
+      canvas.height = img.height * scale;
+      const ctx = canvas.getContext("2d");
+      ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
+      resolve(canvas.toDataURL("image/jpeg", 0.5));
+    };
+    img.onerror = () => resolve(null);
+    img.src = URL.createObjectURL(file);
+  });
+}
+
 function saveLocalReport(report) {
   const reports = getLocalReports();
   reports.unshift(report);
@@ -116,20 +134,17 @@ export default function CommunityPage() {
         photos: [],
       };
 
+      // Convert photos to small data URLs for storage
+      const photoDataUrls = [];
+      for (const photo of photos.slice(0, 3)) {
+        const dataUrl = await compressAndEncode(photo);
+        if (dataUrl) photoDataUrls.push(dataUrl);
+      }
+      report.photos = photoDataUrls;
+
       if (firebaseReady) {
-        await submitReport({ ...report, photos });
+        await submitReport({ ...report, photos: [] });
       } else {
-        // Store locally with photo data URLs
-        const photoDataUrls = [];
-        for (const photo of photos) {
-          const reader = new FileReader();
-          const dataUrl = await new Promise((resolve) => {
-            reader.onload = (e) => resolve(e.target.result);
-            reader.readAsDataURL(photo);
-          });
-          photoDataUrls.push(dataUrl);
-        }
-        report.photos = photoDataUrls;
         report.id = Date.now().toString();
         saveLocalReport(report);
       }

@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
+import { Wind, Building2, Scale } from "lucide-react";
 import { zipToCoords, getAirQuality, getWeatherData, calcOverallScore, getHistoricalTemp } from "../../lib/climateApi";
 import { getEJScreenData } from "../../lib/ejscreen";
 import { getRedliningData, HOLC_COLORS } from "../../lib/redlining";
@@ -326,15 +327,15 @@ function LookupContent() {
             <div className="section">
               <h3 className="section-title">Understanding Your Data</h3>
               <div className="fact-card">
-                <div className="fact-main">💨 About Air Quality Index (AQI)</div>
+                <div className="fact-main"><Wind size={18} style={{ display: "inline", verticalAlign: "middle", marginRight: 6 }} /> About Air Quality Index (AQI)</div>
                 <div className="fact-context">{GLOSSARY.AQI} The EPA calculates AQI from five pollutants: ground-level ozone, particulate matter, carbon monoxide, sulfur dioxide, and nitrogen dioxide.</div>
               </div>
               <div className="fact-card">
-                <div className="fact-main">🏙️ About Heat Islands</div>
+                <div className="fact-main"><Building2 size={18} style={{ display: "inline", verticalAlign: "middle", marginRight: 6 }} /> About Heat Islands</div>
                 <div className="fact-context">{GLOSSARY["Heat Island"]} A single mature tree can cool surrounding air by up to 10°F through shade and evapotranspiration — this is why botanical gardens and conservatories are critical climate infrastructure.</div>
               </div>
               <div className="fact-card">
-                <div className="fact-main">⚖️ About Environmental Justice</div>
+                <div className="fact-main"><Scale size={18} style={{ display: "inline", verticalAlign: "middle", marginRight: 6 }} /> About Environmental Justice</div>
                 <div className="fact-context">Low-income neighborhoods have 41% less tree canopy than wealthy ones. This disparity traces directly to 1930s redlining policies that determined which neighborhoods received investment. The effects persist today in temperature, air quality, and health outcomes.</div>
               </div>
             </div>

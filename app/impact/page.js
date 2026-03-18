@@ -1,5 +1,6 @@
 "use client";
 import { useState, useRef } from "react";
+import { Thermometer, Wind, Droplets } from "lucide-react";
 import { zipToCoords, getAirQuality, getWeatherData, calcOverallScore } from "../../lib/climateApi";
 
 export default function ImpactPage() {
@@ -164,7 +165,7 @@ export default function ImpactPage() {
             {/* Key findings */}
             <h3 className="section-title">Key Findings</h3>
             <div className="fact-card">
-              <div className="fact-main">🌡️ Temperature Impact</div>
+              <div className="fact-main"><Thermometer size={18} style={{ display: "inline", verticalAlign: "middle", marginRight: 6 }} /> Temperature Impact</div>
               <div className="fact-context">
                 {report.site.weather && report.nearby.weather
                   ? `Your site area currently measures ${report.site.weather.currentTemp}°F compared to ${report.nearby.weather.currentTemp}°F in the comparison area. `
@@ -174,14 +175,14 @@ export default function ImpactPage() {
               </div>
             </div>
             <div className="fact-card">
-              <div className="fact-main">💨 Air Quality Impact</div>
+              <div className="fact-main"><Wind size={18} style={{ display: "inline", verticalAlign: "middle", marginRight: 6 }} /> Air Quality Impact</div>
               <div className="fact-context">
                 Your site area has an AQI of {report.site.aqi.aqi} ({report.site.aqi.category}) vs {report.nearby.aqi.aqi} ({report.nearby.aqi.category}) in the comparison area.
                 Trees and vegetation filter particulate matter, absorb gaseous pollutants, and produce oxygen. The health cost of air pollution in the US is estimated at $150 billion annually.
               </div>
             </div>
             <div className="fact-card">
-              <div className="fact-main">🌊 Stormwater Management</div>
+              <div className="fact-main"><Droplets size={18} style={{ display: "inline", verticalAlign: "middle", marginRight: 6 }} /> Stormwater Management</div>
               <div className="fact-context">
                 Green spaces absorb rainfall, reducing flood risk and preventing stormwater overflow into waterways.
                 One inch of floodwater can cause $25,000 in property damage. Green infrastructure is a cost-effective alternative to gray infrastructure for flood mitigation.

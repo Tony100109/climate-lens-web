@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import { Landmark, MapPin, Building2, TreePine, FileText, Newspaper } from "lucide-react";
 import { zipToCoords, getAirQuality, getWeatherData, calcOverallScore } from "../../lib/climateApi";
 
 export default function ActionPage() {
@@ -83,13 +84,13 @@ Data provided by Climate Lens (climatelens.org)` : "";
             <h3 className="section-title">Even without data, you can act now:</h3>
             <div className="grid-2">
               {[
-                { icon: "🏛️", title: "Find Your U.S. Representative", url: "https://www.house.gov/representatives/find-your-representative" },
-                { icon: "🏛️", title: "Find Your U.S. Senators", url: "https://www.senate.gov/senators/senators-contact.htm" },
-                { icon: "📍", title: "Find State Legislators", url: "https://openstates.org/find_your_legislator/" },
-                { icon: "🏙️", title: "Find Local Officials", url: "https://www.usa.gov/elected-officials" },
+                { icon: Landmark, title: "Find Your U.S. Representative", url: "https://www.house.gov/representatives/find-your-representative" },
+                { icon: Landmark, title: "Find Your U.S. Senators", url: "https://www.senate.gov/senators/senators-contact.htm" },
+                { icon: MapPin, title: "Find State Legislators", url: "https://openstates.org/find_your_legislator/" },
+                { icon: Building2, title: "Find Local Officials", url: "https://www.usa.gov/elected-officials" },
               ].map((link) => (
                 <a key={link.title} href={link.url} target="_blank" rel="noopener noreferrer" className="card card-hover" style={{ textDecoration: "none" }}>
-                  <span style={{ fontSize: "1.5rem", marginRight: 12 }}>{link.icon}</span>
+                  <span style={{ marginRight: 12 }}><link.icon size={24} /></span>
                   <span style={{ color: "var(--text)" }}>{link.title}</span>
                 </a>
               ))}
@@ -155,14 +156,14 @@ Data provided by Climate Lens (climatelens.org)` : "";
             <div className="step-row"><div className="step-number">4</div><h3>Go Further</h3></div>
             <div className="grid-2">
               {[
-                { icon: "🏛️", title: "Attend a City Council Meeting", desc: "Bring your Climate Lens data. Public comment periods are your right." },
-                { icon: "🌳", title: "Join a Tree Planting Event", desc: "Trees reduce heat islands by up to 10°F and filter pollutants." },
-                { icon: "📝", title: "Start a Petition", desc: "Use your data to petition for green infrastructure in underserved areas." },
-                { icon: "📰", title: "Contact Local Media", desc: "Pitch your findings to local news. Data-driven stories get covered." },
+                { icon: Landmark, title: "Attend a City Council Meeting", desc: "Bring your Climate Lens data. Public comment periods are your right." },
+                { icon: TreePine, title: "Join a Tree Planting Event", desc: "Trees reduce heat islands by up to 10°F and filter pollutants." },
+                { icon: FileText, title: "Start a Petition", desc: "Use your data to petition for green infrastructure in underserved areas." },
+                { icon: Newspaper, title: "Contact Local Media", desc: "Pitch your findings to local news. Data-driven stories get covered." },
               ].map((item) => (
                 <div key={item.title} className="card">
                   <div style={{ display: "flex", alignItems: "flex-start", gap: 12 }}>
-                    <span style={{ fontSize: "1.5rem" }}>{item.icon}</span>
+                    <span><item.icon size={24} /></span>
                     <div>
                       <h4 style={{ marginBottom: 4 }}>{item.title}</h4>
                       <p style={{ color: "var(--text-muted)", fontSize: "0.9rem" }}>{item.desc}</p>
