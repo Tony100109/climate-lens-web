@@ -2,6 +2,8 @@
 import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import { zipToCoords, getAirQuality, getWeatherData, calcOverallScore, getHistoricalTemp } from "../../lib/climateApi";
+import { getEJScreenData } from "../../lib/ejscreen";
+import { getRedliningData, HOLC_COLORS } from "../../lib/redlining";
 
 const GLOSSARY = {
   AQI: "Air Quality Index measures how clean or polluted the air is on a 0-500 scale. Below 50 is good; above 100 is unhealthy for sensitive groups.",
@@ -36,13 +38,15 @@ function LookupContent() {
     try {
       const coords = await zipToCoords(z);
       if (!coords) throw new Error("Invalid ZIP");
-      const [aqi, weather, history] = await Promise.all([
+      const [aqi, weather, history, ej, redlining] = await Promise.all([
         getAirQuality(coords.lat, coords.lon),
         getWeatherData(coords.lat, coords.lon),
         getHistoricalTemp(coords.lat, coords.lon),
+        getEJScreenData(coords.lat, coords.lon),
+        getRedliningData(coords.city),
       ]);
       const score = calcOverallScore(aqi, weather);
-      setData({ coords, aqi, weather, history, score, zip: z });
+      setData({ coords, aqi, weather, history, score, ej, redlining, zip: z });
     } catch { setError("Could not fetch data for this ZIP code."); }
     setLoading(false);
   }
@@ -196,6 +200,128 @@ function LookupContent() {
               </div>
             )}
 
+            {/* EJScreen Data */}
+            {data.ej && (
+              <div className="card" style={{ marginBottom: 24 }}>
+                <h4 style={{ color: "var(--text-muted)", fontSize: "0.8rem", textTransform: "uppercase", marginBottom: 12 }}>
+                  EPA Environmental Justice Data
+                  <button onClick={() => setTooltip(tooltip === "EJ" ? null : "EJ")} style={{ background: "none", border: "none", color: "var(--primary)", cursor: "pointer", fontSize: "0.8rem", marginLeft: 8 }}>[?]</button>
+                </h4>
+                {tooltip === "EJ" && (
+                  <div className="insight-banner" style={{ marginBottom: 12, fontSize: "0.85rem" }}>
+                    EJScreen is the EPA's environmental justice mapping tool. It combines environmental indicators (pollution, proximity to hazards) with demographic data (income, race) to identify communities facing disproportionate environmental burdens.
+                  </div>
+                )}
+                {data.ej.available ? (
+                  <>
+                    {data.ej.demographics && (
+                      <div style={{ marginBottom: 16 }}>
+                        <h5 style={{ color: "var(--text-muted)", fontSize: "0.75rem", textTransform: "uppercase", marginBottom: 8 }}>Demographics</h5>
+                        <div className="grid-3">
+                          {data.ej.demographics.pctMinority != null && (
+                            <div style={{ textAlign: "center" }}>
+                              <div style={{ fontSize: "1.8rem", fontWeight: 800 }}>{data.ej.demographics.pctMinority}%</div>
+                              <div style={{ color: "var(--text-dim)", fontSize: "0.8rem" }}>Minority</div>
+                            </div>
+                          )}
+                          {data.ej.demographics.pctLowIncome != null && (
+                            <div style={{ textAlign: "center" }}>
+                              <div style={{ fontSize: "1.8rem", fontWeight: 800 }}>{data.ej.demographics.pctLowIncome}%</div>
+                              <div style={{ color: "var(--text-dim)", fontSize: "0.8rem" }}>Low Income</div>
+                            </div>
+                          )}
+                          {data.ej.demographics.population != null && (
+                            <div style={{ textAlign: "center" }}>
+                              <div style={{ fontSize: "1.8rem", fontWeight: 800 }}>{data.ej.demographics.population.toLocaleString()}</div>
+                              <div style={{ color: "var(--text-dim)", fontSize: "0.8rem" }}>Population</div>
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                    )}
+                    {data.ej.ejIndices && (
+                      <div>
+                        <h5 style={{ color: "var(--text-muted)", fontSize: "0.75rem", textTransform: "uppercase", marginBottom: 8 }}>EJ Index Percentiles (higher = more burdened)</h5>
+                        {Object.entries(data.ej.ejIndices).filter(([, v]) => v != null).map(([key, val]) => (
+                          <div key={key} className="metric-row">
+                            <span className="metric-label">{data.ej.indicators[key]?.label || key}</span>
+                            <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
+                              <div style={{ width: 100, height: 8, borderRadius: 4, background: "var(--border)", overflow: "hidden" }}>
+                                <div style={{ width: `${val}%`, height: "100%", borderRadius: 4, background: val > 80 ? "var(--accent-red)" : val > 50 ? "var(--accent-orange)" : "var(--accent-green)" }} />
+                              </div>
+                              <span className="metric-value" style={{ color: val > 80 ? "var(--accent-red)" : val > 50 ? "var(--accent-orange)" : "var(--accent-green)", minWidth: 40 }}>{val}th</span>
+                            </div>
+                          </div>
+                        ))}
+                        <p style={{ color: "var(--text-dim)", fontSize: "0.8rem", marginTop: 8 }}>
+                          Percentile relative to all US census block groups. 90th means this area is more burdened than 90% of the country.
+                        </p>
+                      </div>
+                    )}
+                  </>
+                ) : (
+                  <div className="insight-banner">
+                    <p style={{ fontSize: "0.9rem" }}>{data.ej.note}</p>
+                    <a href="https://screening-tools.com/epa-ejscreen" target="_blank" rel="noopener noreferrer" style={{ fontSize: "0.85rem" }}>Access archived EJScreen data →</a>
+                  </div>
+                )}
+              </div>
+            )}
+
+            {/* Redlining History */}
+            {data.redlining && (
+              <div className="card" style={{ marginBottom: 24 }}>
+                <h4 style={{ color: "var(--text-muted)", fontSize: "0.8rem", textTransform: "uppercase", marginBottom: 12 }}>
+                  Historical Redlining — {data.coords.city}
+                  <button onClick={() => setTooltip(tooltip === "redlining" ? null : "redlining")} style={{ background: "none", border: "none", color: "var(--primary)", cursor: "pointer", fontSize: "0.8rem", marginLeft: 8 }}>[?]</button>
+                </h4>
+                {tooltip === "redlining" && (
+                  <div className="insight-banner" style={{ marginBottom: 12, fontSize: "0.85rem" }}>
+                    In the 1930s, the Home Owners' Loan Corporation (HOLC) graded neighborhoods A through D. "D" neighborhoods — outlined in red — were denied loans and investment. These were predominantly Black and immigrant communities. Today, formerly redlined areas have worse air quality, less tree cover, and higher temperatures.
+                  </div>
+                )}
+                {data.redlining.available ? (
+                  <>
+                    <p style={{ color: "var(--text-muted)", fontSize: "0.9rem", marginBottom: 16 }}>
+                      {data.coords.city} was mapped by HOLC with <strong>{data.redlining.summary.totalNeighborhoods}</strong> graded neighborhoods.
+                      <strong style={{ color: "var(--accent-red)" }}> {data.redlining.summary.percentRedlined}%</strong> were graded C or D (declining/hazardous).
+                    </p>
+                    <div style={{ display: "flex", gap: 12, marginBottom: 16 }}>
+                      {Object.entries(data.redlining.summary.grades).map(([grade, count]) => (
+                        <div key={grade} style={{ flex: 1, textAlign: "center", padding: 12, borderRadius: 8, background: `${HOLC_COLORS[grade].color}15`, border: `1px solid ${HOLC_COLORS[grade].color}30` }}>
+                          <div style={{ fontSize: "1.5rem", fontWeight: 800, color: HOLC_COLORS[grade].color }}>{count}</div>
+                          <div style={{ fontSize: "0.75rem", color: HOLC_COLORS[grade].color }}>{HOLC_COLORS[grade].label}</div>
+                        </div>
+                      ))}
+                    </div>
+                    <div className="fact-card">
+                      <div className="fact-main">The connection to today</div>
+                      <div className="fact-context">
+                        Research shows that neighborhoods graded "D" (redlined) in the 1930s are today an average of 5°F hotter, have 23% less tree canopy, and have significantly higher rates of asthma and heart disease than "A"-graded neighborhoods in the same city. The lines drawn 90 years ago still predict who breathes clean air and who doesn't.
+                      </div>
+                    </div>
+                    <a href={`https://dsl.richmond.edu/panorama/redlining/map`} target="_blank" rel="noopener noreferrer"
+                      className="btn btn-secondary" style={{ marginTop: 12, width: "100%", textAlign: "center" }}>
+                      View Full Interactive Map — Mapping Inequality Project →
+                    </a>
+                    <p style={{ color: "var(--text-dim)", fontSize: "0.75rem", marginTop: 8 }}>
+                      Data from the Mapping Inequality project, University of Richmond. Digital Scholarship Lab.
+                    </p>
+                  </>
+                ) : (
+                  <div>
+                    <p style={{ color: "var(--text-muted)", fontSize: "0.9rem", marginBottom: 12 }}>{data.redlining.note}</p>
+                    {data.redlining.allCities && (
+                      <details style={{ color: "var(--text-dim)", fontSize: "0.85rem" }}>
+                        <summary style={{ cursor: "pointer", color: "var(--primary)" }}>Cities with redlining data ({data.redlining.allCities.length})</summary>
+                        <p style={{ marginTop: 8, lineHeight: 1.8 }}>{data.redlining.allCities.join(", ")}</p>
+                      </details>
+                    )}
+                  </div>
+                )}
+              </div>
+            )}
+
             {/* Educational context */}
             <div className="section">
               <h3 className="section-title">Understanding Your Data</h3>
@@ -214,7 +340,7 @@ function LookupContent() {
             </div>
 
             <div style={{ marginTop: 24, color: "var(--text-dim)", fontSize: "0.85rem" }}>
-              Data sources: EPA AirNow, Open-Meteo (NOAA/ECMWF), Open-Meteo Air Quality, Open-Meteo Archive
+              Data sources: EPA AirNow, EPA EJScreen, NOAA/ECMWF via Open-Meteo, Mapping Inequality (University of Richmond)
             </div>
           </>
         )}

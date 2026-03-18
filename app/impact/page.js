@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { zipToCoords, getAirQuality, getWeatherData, calcOverallScore } from "../../lib/climateApi";
 
 export default function ImpactPage() {
@@ -9,6 +9,8 @@ export default function ImpactPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [report, setReport] = useState(null);
+  const [pdfLoading, setPdfLoading] = useState(false);
+  const reportRef = useRef(null);
 
   async function fetchArea(z) {
     const coords = await zipToCoords(z);
@@ -32,6 +34,46 @@ export default function ImpactPage() {
   };
 
   const handlePrint = () => window.print();
+
+  const handleDownloadPDF = async () => {
+    if (!reportRef.current) return;
+    setPdfLoading(true);
+    try {
+      const html2canvas = (await import("html2canvas")).default;
+      const { jsPDF } = await import("jspdf");
+      const element = reportRef.current;
+      const canvas = await html2canvas(element, {
+        scale: 2,
+        backgroundColor: "#0a0a14",
+        useCORS: true,
+      });
+      const imgData = canvas.toDataURL("image/png");
+      const pdf = new jsPDF("p", "mm", "a4");
+      const pageWidth = pdf.internal.pageSize.getWidth();
+      const pageHeight = pdf.internal.pageSize.getHeight();
+      const imgWidth = pageWidth - 20;
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+      let heightLeft = imgHeight;
+      let position = 10;
+
+      pdf.addImage(imgData, "PNG", 10, position, imgWidth, imgHeight);
+      heightLeft -= pageHeight;
+
+      while (heightLeft > 0) {
+        position = heightLeft - imgHeight + 10;
+        pdf.addPage();
+        pdf.addImage(imgData, "PNG", 10, position, imgWidth, imgHeight);
+        heightLeft -= pageHeight;
+      }
+
+      pdf.save(`${report.orgName.replace(/\s+/g, "-")}-Impact-Report.pdf`);
+    } catch (err) {
+      console.error("PDF generation failed:", err);
+      window.print();
+    }
+    setPdfLoading(false);
+  };
 
   return (
     <div className="page">
@@ -68,14 +110,17 @@ export default function ImpactPage() {
         {loading && <div className="loading"><div className="spinner" />Generating your impact report...</div>}
 
         {report && (
-          <div id="impact-report">
+          <div id="impact-report" ref={reportRef}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: 32 }}>
               <div>
                 <h2 style={{ fontSize: "1.6rem" }}>{report.orgName}</h2>
                 <p style={{ color: "var(--text-muted)" }}>Environmental Impact Report — {new Date().toLocaleDateString()}</p>
               </div>
               <div style={{ display: "flex", gap: 8 }}>
-                <button onClick={handlePrint} className="btn btn-secondary">Print / Save PDF</button>
+                <button onClick={handleDownloadPDF} className="btn btn-primary" disabled={pdfLoading}>
+                  {pdfLoading ? "Generating PDF..." : "Download PDF"}
+                </button>
+                <button onClick={handlePrint} className="btn btn-secondary">Print</button>
                 <button onClick={() => setReport(null)} className="btn btn-secondary">New Report</button>
               </div>
             </div>
