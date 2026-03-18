@@ -78,6 +78,14 @@ export default function Home() {
               <h3 style={{ marginBottom: 8 }}>📊 Green Impact Report</h3>
               <p style={{ color: "var(--text-muted)", fontSize: "0.9rem" }}>Generate a data-backed report showing your garden or park's measurable climate impact.</p>
             </Link>
+            <Link href="/health-cost" className="card card-hover" style={{ textDecoration: "none" }}>
+              <h3 style={{ marginBottom: 8 }}>💰 Health Cost Calculator</h3>
+              <p style={{ color: "var(--text-muted)", fontSize: "0.9rem" }}>Estimate the annual health and energy costs from pollution and heat — and what trees would save.</p>
+            </Link>
+            <Link href="/tree-calculator" className="card card-hover" style={{ textDecoration: "none" }}>
+              <h3 style={{ marginBottom: 8 }}>🌳 Tree Impact Calculator</h3>
+              <p style={{ color: "var(--text-muted)", fontSize: "0.9rem" }}>Calculate how many trees you need, their CO2 impact, and get ready-to-use grant language.</p>
+            </Link>
             <Link href="/learn" className="card card-hover" style={{ textDecoration: "none" }}>
               <h3 style={{ marginBottom: 8 }}>📖 Learn</h3>
               <p style={{ color: "var(--text-muted)", fontSize: "0.9rem" }}>Educational articles explaining AQI, heat islands, environmental justice, and what the data means.</p>

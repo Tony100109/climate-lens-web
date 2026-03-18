@@ -1,14 +1,22 @@
 "use client";
 import Link from "next/link";
+import { useState } from "react";
 
 export default function Nav() {
+  const [open, setOpen] = useState(false);
+
   return (
     <nav className="nav">
-      <Link href="/" className="nav-logo">Climate Lens</Link>
-      <ul className="nav-links">
+      <Link href="/" className="nav-logo">🌿 Climate Lens</Link>
+      <button className="nav-mobile-toggle" onClick={() => setOpen(!open)} aria-label="Toggle menu">
+        {open ? "✕" : "☰"}
+      </button>
+      <ul className={`nav-links${open ? " open" : ""}`} onClick={() => setOpen(false)}>
         <li><Link href="/lookup">Lookup</Link></li>
         <li><Link href="/compare">Compare</Link></li>
         <li><Link href="/impact">Impact Report</Link></li>
+        <li><Link href="/health-cost">Health Costs</Link></li>
+        <li><Link href="/tree-calculator">Tree Calculator</Link></li>
         <li><Link href="/learn">Learn</Link></li>
         <li><Link href="/classroom">Classroom</Link></li>
         <li><Link href="/action">Take Action</Link></li>
