@@ -162,15 +162,6 @@ export default function ImpactPage() {
       y += 4;
       addLine();
 
-      // Grant links
-      addText("Relevant Funding Opportunities", 14, "bold");
-      y += 2;
-      addLink("EPA Environmental Justice Small Grants — epa.gov/arp", "https://www.epa.gov/arp/environmental-justice-small-grants-program");
-      addLink("EPA Thriving Communities Grantmaking — epa.gov/environmentaljustice", "https://www.epa.gov/environmentaljustice/environmental-justice-thriving-communities-grantmaking-program");
-      addLink("USDA Urban & Community Forestry — fs.usda.gov", "https://www.fs.usda.gov/managing-land/urban-forests/ucf");
-      addLink("NOAA Coastal Resilience Funding — coast.noaa.gov/funding", "https://www.coast.noaa.gov/funding/");
-      y += 4;
-
       // Cross-reference
       addText("Strengthen this report by cross-referencing with:", 10, "bold");
       y += 1;
@@ -320,27 +311,6 @@ export default function ImpactPage() {
               </p>
             </div>
 
-            {/* Relevant grants */}
-            <div className="card" style={{ marginTop: 24 }}>
-              <h3 style={{ marginBottom: 12 }}>Relevant Funding Opportunities</h3>
-              <p style={{ color: "var(--text-muted)", fontSize: "0.9rem", marginBottom: 16 }}>Attach this report when applying to these programs:</p>
-              {[
-                { name: "EPA Environmental Justice Small Grants", url: "https://www.epa.gov/arp/environmental-justice-small-grants-program", desc: "Federal grants for community-based EJ projects" },
-                { name: "EPA Thriving Communities Grantmaking", url: "https://www.epa.gov/environmentaljustice/environmental-justice-thriving-communities-grantmaking-program", desc: "Subgrants $75K-$350K for nonprofits and local governments" },
-                { name: "USDA Urban & Community Forestry", url: "https://www.fs.usda.gov/managing-land/urban-forests/ucf", desc: "$1B+ in tree planting and urban forest grants" },
-                { name: "NOAA Coastal Resilience Funding", url: "https://www.coast.noaa.gov/funding/", desc: "Grants for climate resilience in coastal communities" },
-              ].map((grant) => (
-                <a key={grant.name} href={grant.url} target="_blank" rel="noopener noreferrer" style={{ textDecoration: "none", display: "block" }}>
-                  <div className="metric-row" style={{ cursor: "pointer" }}>
-                    <div>
-                      <div style={{ fontWeight: 600, color: "var(--text)" }}>{grant.name}</div>
-                      <div style={{ color: "var(--text-dim)", fontSize: "0.8rem" }}>{grant.desc}</div>
-                    </div>
-                    <span style={{ color: "var(--primary)" }}>Visit →</span>
-                  </div>
-                </a>
-              ))}
-            </div>
 
             {/* Cross-reference */}
             <div className="insight-banner" style={{ marginTop: 24 }}>
