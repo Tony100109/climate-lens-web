@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { Search, Camera, MapPin, Scale, FileText, DollarSign, TreePine, BookOpen, GraduationCap, Megaphone } from "lucide-react";
 
 export default function Home() {
   const [zip, setZip] = useState("");
@@ -19,7 +20,6 @@ export default function Home() {
     <div className="page">
       <div className="container">
 
-        {/* Hero — simple, no fluff */}
         <div style={{ padding: "64px 0 40px", maxWidth: 620 }}>
           <h1 style={{ fontSize: "2.6rem", fontWeight: 800, lineHeight: 1.15, marginBottom: 16 }}>
             Your neighborhood's climate data,<br />
@@ -40,90 +40,116 @@ export default function Home() {
               onChange={(e) => setZip(e.target.value.replace(/[^0-9]/g, "").slice(0, 5))}
               maxLength={5}
             />
-            <button type="submit" className="btn btn-primary" style={{ whiteSpace: "nowrap" }}>
-              Look up
+            <button type="submit" className="btn btn-primary" style={{ whiteSpace: "nowrap", gap: 6, display: "inline-flex", alignItems: "center" }}>
+              <Search size={16} /> Look up
             </button>
           </form>
         </div>
 
-        {/* What this actually does — varied layout, not a grid of identical cards */}
         <div style={{ marginTop: 56 }}>
           <h2 style={{ fontSize: "1.1rem", color: "var(--text-dim)", textTransform: "uppercase", letterSpacing: 1, marginBottom: 24 }}>Tools</h2>
 
           {/* Community — the differentiator */}
-          <Link href="/community" className="card card-hover" style={{ textDecoration: "none", marginBottom: 16, display: "block", borderColor: "var(--primary)" }}>
-            <h3 style={{ marginBottom: 6, color: "var(--text)" }}>Community Evidence Board</h3>
-            <p style={{ color: "var(--text-muted)", fontSize: "0.9rem" }}>
-              Document what your neighborhood actually looks like — no trees, flooding, pollution,
-              cracked infrastructure. Your photos get paired with real-time EPA and NOAA data
-              automatically. Government data tells part of the story. You tell the rest.
-            </p>
+          <Link href="/community" className="card card-hover" style={{ textDecoration: "none", marginBottom: 16, display: "flex", gap: 16, alignItems: "flex-start", borderColor: "var(--primary)" }}>
+            <Camera size={24} style={{ color: "var(--primary)", flexShrink: 0, marginTop: 2 }} />
+            <div>
+              <h3 style={{ marginBottom: 6, color: "var(--text)" }}>Community Evidence Board</h3>
+              <p style={{ color: "var(--text-muted)", fontSize: "0.9rem" }}>
+                Document what your neighborhood actually looks like — no trees, flooding, pollution,
+                cracked infrastructure. Your photos get paired with real-time EPA and NOAA data
+                automatically. Government data tells part of the story. You tell the rest.
+              </p>
+            </div>
           </Link>
 
           {/* Primary tools */}
           <div className="grid-2" style={{ marginBottom: 16 }}>
-            <Link href="/lookup" className="card card-hover" style={{ textDecoration: "none" }}>
-              <h3 style={{ marginBottom: 6, color: "var(--text)" }}>Climate Lookup</h3>
-              <p style={{ color: "var(--text-muted)", fontSize: "0.9rem" }}>
-                Real-time air quality, heat risk, 10-year temperature trends, EPA environmental justice
-                data, and 1930s redlining history — all from one ZIP code search.
-              </p>
+            <Link href="/lookup" className="card card-hover" style={{ textDecoration: "none", display: "flex", gap: 14, alignItems: "flex-start" }}>
+              <MapPin size={20} style={{ color: "var(--primary)", flexShrink: 0, marginTop: 2 }} />
+              <div>
+                <h3 style={{ marginBottom: 6, color: "var(--text)" }}>Climate Lookup</h3>
+                <p style={{ color: "var(--text-muted)", fontSize: "0.9rem" }}>
+                  Real-time air quality, heat risk, 10-year temperature trends, EPA environmental justice
+                  data, and 1930s redlining history — all from one ZIP code search.
+                </p>
+              </div>
             </Link>
-            <Link href="/compare" className="card card-hover" style={{ textDecoration: "none" }}>
-              <h3 style={{ marginBottom: 6, color: "var(--text)" }}>Compare Two Areas</h3>
-              <p style={{ color: "var(--text-muted)", fontSize: "0.9rem" }}>
-                Beverly Hills vs South LA. Lincoln Park vs Englewood. See exactly how environmental
-                quality differs between neighborhoods — and why.
-              </p>
+            <Link href="/compare" className="card card-hover" style={{ textDecoration: "none", display: "flex", gap: 14, alignItems: "flex-start" }}>
+              <Scale size={20} style={{ color: "var(--primary)", flexShrink: 0, marginTop: 2 }} />
+              <div>
+                <h3 style={{ marginBottom: 6, color: "var(--text)" }}>Compare Two Areas</h3>
+                <p style={{ color: "var(--text-muted)", fontSize: "0.9rem" }}>
+                  Beverly Hills vs South LA. Lincoln Park vs Englewood. See exactly how environmental
+                  quality differs between neighborhoods — and why.
+                </p>
+              </div>
             </Link>
           </div>
 
           {/* Grant tools */}
           <div className="grid-3" style={{ marginBottom: 16 }}>
-            <Link href="/impact" className="card card-hover" style={{ textDecoration: "none" }}>
-              <h3 style={{ marginBottom: 6, fontSize: "1rem", color: "var(--text)" }}>Impact Report</h3>
-              <p style={{ color: "var(--text-muted)", fontSize: "0.85rem" }}>
-                Generate a PDF comparing your site's environmental data to surrounding areas. Built for grant applications.
-              </p>
+            <Link href="/impact" className="card card-hover" style={{ textDecoration: "none", display: "flex", gap: 12, alignItems: "flex-start" }}>
+              <FileText size={18} style={{ color: "var(--primary)", flexShrink: 0, marginTop: 2 }} />
+              <div>
+                <h3 style={{ marginBottom: 6, fontSize: "1rem", color: "var(--text)" }}>Impact Report</h3>
+                <p style={{ color: "var(--text-muted)", fontSize: "0.85rem" }}>
+                  Generate a PDF comparing your site's environmental data to surrounding areas. Built for grant applications.
+                </p>
+              </div>
             </Link>
-            <Link href="/health-cost" className="card card-hover" style={{ textDecoration: "none" }}>
-              <h3 style={{ marginBottom: 6, fontSize: "1rem", color: "var(--text)" }}>Health Cost Calculator</h3>
-              <p style={{ color: "var(--text-muted)", fontSize: "0.85rem" }}>
-                Estimated annual health costs from local pollution and heat. Shows what trees would save in dollars.
-              </p>
+            <Link href="/health-cost" className="card card-hover" style={{ textDecoration: "none", display: "flex", gap: 12, alignItems: "flex-start" }}>
+              <DollarSign size={18} style={{ color: "var(--primary)", flexShrink: 0, marginTop: 2 }} />
+              <div>
+                <h3 style={{ marginBottom: 6, fontSize: "1rem", color: "var(--text)" }}>Health Cost Calculator</h3>
+                <p style={{ color: "var(--text-muted)", fontSize: "0.85rem" }}>
+                  Estimated annual health costs from local pollution and heat. Shows what trees would save in dollars.
+                </p>
+              </div>
             </Link>
-            <Link href="/tree-calculator" className="card card-hover" style={{ textDecoration: "none" }}>
-              <h3 style={{ marginBottom: 6, fontSize: "1rem", color: "var(--text)" }}>Tree Calculator</h3>
-              <p style={{ color: "var(--text-muted)", fontSize: "0.85rem" }}>
-                How many trees, how much CO2, what ROI. Generates copy-paste grant language with your numbers.
-              </p>
+            <Link href="/tree-calculator" className="card card-hover" style={{ textDecoration: "none", display: "flex", gap: 12, alignItems: "flex-start" }}>
+              <TreePine size={18} style={{ color: "var(--primary)", flexShrink: 0, marginTop: 2 }} />
+              <div>
+                <h3 style={{ marginBottom: 6, fontSize: "1rem", color: "var(--text)" }}>Tree Calculator</h3>
+                <p style={{ color: "var(--text-muted)", fontSize: "0.85rem" }}>
+                  How many trees, how much CO2, what ROI. Generates copy-paste grant language with your numbers.
+                </p>
+              </div>
             </Link>
           </div>
 
           {/* Education + Action */}
           <div className="grid-3">
-            <Link href="/learn" className="card card-hover" style={{ textDecoration: "none" }}>
-              <h3 style={{ marginBottom: 6, fontSize: "1rem", color: "var(--text)" }}>Learn</h3>
-              <p style={{ color: "var(--text-muted)", fontSize: "0.85rem" }}>
-                What is AQI? What's a heat island? Why does redlining still matter? Plain-English explainers.
-              </p>
+            <Link href="/learn" className="card card-hover" style={{ textDecoration: "none", display: "flex", gap: 12, alignItems: "flex-start" }}>
+              <BookOpen size={18} style={{ color: "var(--primary)", flexShrink: 0, marginTop: 2 }} />
+              <div>
+                <h3 style={{ marginBottom: 6, fontSize: "1rem", color: "var(--text)" }}>Learn</h3>
+                <p style={{ color: "var(--text-muted)", fontSize: "0.85rem" }}>
+                  What is AQI? What's a heat island? Why does redlining still matter? Plain-English explainers.
+                </p>
+              </div>
             </Link>
-            <Link href="/classroom" className="card card-hover" style={{ textDecoration: "none" }}>
-              <h3 style={{ marginBottom: 6, fontSize: "1rem", color: "var(--text)" }}>Classroom Toolkit</h3>
-              <p style={{ color: "var(--text-muted)", fontSize: "0.85rem" }}>
-                Lesson plans for grades 6-12. Students compare their own neighborhoods. No prep needed.
-              </p>
+            <Link href="/classroom" className="card card-hover" style={{ textDecoration: "none", display: "flex", gap: 12, alignItems: "flex-start" }}>
+              <GraduationCap size={18} style={{ color: "var(--primary)", flexShrink: 0, marginTop: 2 }} />
+              <div>
+                <h3 style={{ marginBottom: 6, fontSize: "1rem", color: "var(--text)" }}>Classroom Toolkit</h3>
+                <p style={{ color: "var(--text-muted)", fontSize: "0.85rem" }}>
+                  Lesson plans for grades 6-12. Students compare their own neighborhoods. No prep needed.
+                </p>
+              </div>
             </Link>
-            <Link href="/action" className="card card-hover" style={{ textDecoration: "none" }}>
-              <h3 style={{ marginBottom: 6, fontSize: "1rem", color: "var(--text)" }}>Take Action</h3>
-              <p style={{ color: "var(--text-muted)", fontSize: "0.85rem" }}>
-                Find your reps. Get a pre-written email with your area's data. Share on social media.
-              </p>
+            <Link href="/action" className="card card-hover" style={{ textDecoration: "none", display: "flex", gap: 12, alignItems: "flex-start" }}>
+              <Megaphone size={18} style={{ color: "var(--primary)", flexShrink: 0, marginTop: 2 }} />
+              <div>
+                <h3 style={{ marginBottom: 6, fontSize: "1rem", color: "var(--text)" }}>Take Action</h3>
+                <p style={{ color: "var(--text-muted)", fontSize: "0.85rem" }}>
+                  Find your reps. Get a pre-written email with your area's data. Share on social media.
+                </p>
+              </div>
             </Link>
           </div>
         </div>
 
-        {/* The gap — honest, not salesy */}
+        {/* Why this exists */}
         <div style={{ marginTop: 64, maxWidth: 640 }}>
           <h2 style={{ fontSize: "1.1rem", color: "var(--text-dim)", textTransform: "uppercase", letterSpacing: 1, marginBottom: 20 }}>Why this exists</h2>
 
@@ -147,7 +173,7 @@ export default function Home() {
           </p>
         </div>
 
-        {/* Who it's for — just a list, not cards */}
+        {/* Who it's for */}
         <div style={{ marginTop: 48, maxWidth: 640 }}>
           <h2 style={{ fontSize: "1.1rem", color: "var(--text-dim)", textTransform: "uppercase", letterSpacing: 1, marginBottom: 20 }}>Who this is for</h2>
           <div style={{ color: "var(--text-muted)", lineHeight: 2, fontSize: "0.95rem" }}>
@@ -158,7 +184,6 @@ export default function Home() {
           </div>
         </div>
 
-        {/* Data sources — transparency */}
         <div style={{ marginTop: 48, paddingTop: 32, borderTop: "1px solid var(--border)", maxWidth: 640 }}>
           <p style={{ color: "var(--text-dim)", fontSize: "0.8rem", lineHeight: 1.8 }}>
             All data comes from free public APIs: EPA AirNow, EPA EJScreen, NOAA/ECMWF weather data via Open-Meteo,
