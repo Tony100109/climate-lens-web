@@ -50,7 +50,17 @@ export default function Home() {
         <div style={{ marginTop: 56 }}>
           <h2 style={{ fontSize: "1.1rem", color: "var(--text-dim)", textTransform: "uppercase", letterSpacing: 1, marginBottom: 24 }}>Tools</h2>
 
-          {/* Primary tools — bigger */}
+          {/* Community — the differentiator */}
+          <Link href="/community" className="card card-hover" style={{ textDecoration: "none", marginBottom: 16, display: "block", borderColor: "var(--primary)" }}>
+            <h3 style={{ marginBottom: 6, color: "var(--text)" }}>Community Evidence Board</h3>
+            <p style={{ color: "var(--text-muted)", fontSize: "0.9rem" }}>
+              Document what your neighborhood actually looks like — no trees, flooding, pollution,
+              cracked infrastructure. Your photos get paired with real-time EPA and NOAA data
+              automatically. Government data tells part of the story. You tell the rest.
+            </p>
+          </Link>
+
+          {/* Primary tools */}
           <div className="grid-2" style={{ marginBottom: 16 }}>
             <Link href="/lookup" className="card card-hover" style={{ textDecoration: "none" }}>
               <h3 style={{ marginBottom: 6, color: "var(--text)" }}>Climate Lookup</h3>

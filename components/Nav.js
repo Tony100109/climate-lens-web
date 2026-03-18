@@ -14,12 +14,13 @@ export default function Nav() {
       <ul className={`nav-links${open ? " open" : ""}`} onClick={() => setOpen(false)}>
         <li><Link href="/lookup">Lookup</Link></li>
         <li><Link href="/compare">Compare</Link></li>
+        <li><Link href="/community">Community</Link></li>
         <li><Link href="/impact">Impact Report</Link></li>
         <li><Link href="/health-cost">Health Costs</Link></li>
-        <li><Link href="/tree-calculator">Tree Calculator</Link></li>
+        <li><Link href="/tree-calculator">Trees</Link></li>
         <li><Link href="/learn">Learn</Link></li>
         <li><Link href="/classroom">Classroom</Link></li>
-        <li><Link href="/action">Take Action</Link></li>
+        <li><Link href="/action">Act</Link></li>
       </ul>
     </nav>
   );
