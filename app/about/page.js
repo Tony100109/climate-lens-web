@@ -93,10 +93,15 @@ export default function AboutPage() {
 
           <h2 style={{ color: "var(--text)", fontSize: "1.2rem", marginTop: 32, marginBottom: 12 }}>Contact</h2>
 
-          <p>
+          <p style={{ marginBottom: 16 }}>
             If you're an organization that wants to use Climate Lens, a teacher who tried
             the classroom toolkit, or anyone with feedback — I'd like to hear from you.
           </p>
+
+          <a href="mailto:Tony.ScienceHumanitarian@outlook.com"
+            className="btn btn-secondary" style={{ display: "inline-flex", alignItems: "center", gap: 8 }}>
+            <Mail size={16} /> Tony.ScienceHumanitarian@outlook.com
+          </a>
         </div>
       </div>
     </div>
