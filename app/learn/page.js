@@ -99,6 +99,7 @@ export default function LearnPage() {
     <div className="page">
       <div className="container">
         <div className="page-header">
+          <span className="section-label">Education</span>
           <h1>Learn</h1>
           <p>Educational resources explaining what climate data means, why it matters, and how green spaces make a measurable difference. Written in plain English.</p>
         </div>

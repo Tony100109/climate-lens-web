@@ -54,6 +54,7 @@ export default function ComparePage() {
     <div className="page">
       <div className="container">
         <div className="page-header">
+          <span className="section-label">Analysis</span>
           <h1>Compare Two Areas</h1>
           <p>See how climate vulnerability differs between neighborhoods. Expose environmental inequality with real numbers.</p>
         </div>

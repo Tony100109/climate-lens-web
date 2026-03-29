@@ -187,6 +187,7 @@ export default function ImpactPage() {
     <div className="page">
       <div className="container">
         <div className="page-header">
+          <span className="section-label">Grants</span>
           <h1>Green Impact Report</h1>
           <p>Generate a data-backed report showing your conservatory, garden, or park's measurable environmental impact. Attach it to grant applications and funder presentations.</p>
         </div>

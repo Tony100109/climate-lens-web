@@ -78,6 +78,7 @@ export default function TreeCalculatorPage() {
     <div className="page">
       <div className="container">
         <div className="page-header">
+          <span className="section-label">Planning</span>
           <h1>Tree Impact Calculator</h1>
           <p>Calculate exactly how many trees your site needs and what they'd be worth in CO2 absorption, air quality, stormwater management, and energy savings. Built for grant applications.</p>
         </div>

@@ -74,6 +74,7 @@ export default function ClassroomPage() {
     <div className="page">
       <div className="container">
         <div className="page-header">
+          <span className="section-label">Education</span>
           <h1>Classroom Toolkit</h1>
           <p>Ready-to-use lesson plans that turn local climate data into hands-on environmental justice education. No prep needed — just open Climate Lens with your students.</p>
         </div>

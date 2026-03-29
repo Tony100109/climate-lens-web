@@ -81,6 +81,7 @@ export default function HealthCostPage() {
     <div className="page">
       <div className="container">
         <div className="page-header">
+          <span className="section-label">Policy</span>
           <h1>Health Cost Calculator</h1>
           <p>Estimate the annual health and energy costs your community faces due to air pollution and heat — and how much green infrastructure could save.</p>
         </div>

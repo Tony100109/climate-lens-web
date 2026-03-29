@@ -245,6 +245,7 @@ This report was submitted through Climate Lens (climatelens.org), a tool that pa
     <div className="page">
       <div className="container">
         <div className="page-header">
+          <span className="section-label">Community</span>
           <h1>Community Evidence Board</h1>
           <p>
             Government sensors can't see a street with no shade, a flooded intersection, or the

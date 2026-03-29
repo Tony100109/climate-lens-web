@@ -63,6 +63,7 @@ function LookupContent() {
     <div className="page">
       <div className="container">
         <div className="page-header">
+          <span className="section-label">Research</span>
           <h1>Climate Data Lookup</h1>
           <p>Search any US ZIP code for real-time environmental data and educational context.</p>
         </div>

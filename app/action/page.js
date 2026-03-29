@@ -65,6 +65,7 @@ Data provided by Climate Lens (climatelens.org)` : "";
     <div className="page">
       <div className="container">
         <div className="page-header">
+          <span className="section-label">Civic</span>
           <h1>Take Action</h1>
           <p>Your data is powerful. Use it to demand change in your community.</p>
         </div>
