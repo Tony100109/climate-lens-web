@@ -7,20 +7,20 @@ export default function Footer() {
       <div className="footer-inner">
         <div className="footer-brand">
           <h3 style={{ display: "flex", alignItems: "center", gap: 8 }}>
-            <Leaf size={18} /> Climate Lens
+            <Leaf size={16} /> Climate Lens
           </h3>
           <p>
             An open-source research tool aggregating EPA, NOAA, and FEMA data
             into actionable formats for community organizations, educators, and advocates.
           </p>
-          <div style={{ display: "flex", gap: 12, marginTop: 16 }}>
+          <div style={{ display: "flex", gap: 12, marginTop: 14 }}>
             <a href="https://github.com/Tony100109/climate-lens-web" target="_blank" rel="noopener noreferrer"
-              style={{ display: "flex", alignItems: "center", gap: 6 }}>
-              <Github size={16} /> GitHub
+              style={{ display: "flex", alignItems: "center", gap: 5 }}>
+              <Github size={14} /> GitHub
             </a>
             <a href="mailto:Tony.ScienceHumanitarian@outlook.com"
-              style={{ display: "flex", alignItems: "center", gap: 6 }}>
-              <Mail size={16} /> Contact
+              style={{ display: "flex", alignItems: "center", gap: 5 }}>
+              <Mail size={14} /> Contact
             </a>
           </div>
         </div>
@@ -49,12 +49,8 @@ export default function Footer() {
       </div>
 
       <div className="footer-bottom">
-        <span>
-          Climate Lens is open source and not affiliated with any government agency.
-        </span>
-        <span>
-          Data: EPA AirNow, EPA EJScreen, NOAA/ECMWF via Open-Meteo, FEMA NRI, UofR Mapping Inequality
-        </span>
+        <span>Climate Lens is open source and not affiliated with any government agency.</span>
+        <span>Data: EPA AirNow, EPA EJScreen, NOAA/ECMWF, FEMA NRI, UofR Mapping Inequality</span>
       </div>
     </footer>
   );
