@@ -10,7 +10,7 @@ export default function Footer() {
             <Leaf size={16} /> Climate Lens
           </h3>
           <p>
-            An open-source research tool aggregating EPA, NOAA, and FEMA data
+            An open-source research tool turning public air-quality, weather and environmental-justice data
             into actionable formats for community organizations, educators, and advocates.
           </p>
           <div style={{ display: "flex", gap: 12, marginTop: 14 }}>
@@ -50,7 +50,7 @@ export default function Footer() {
 
       <div className="footer-bottom">
         <span>Climate Lens is open source and not affiliated with any government agency.</span>
-        <span>Data: EPA AirNow, EPA EJScreen, NOAA/ECMWF, FEMA NRI, UofR Mapping Inequality</span>
+        <span>Data: Open-Meteo (Copernicus CAMS, NOAA/ECMWF), EPA EJScreen, UofR Mapping Inequality</span>
       </div>
     </footer>
   );

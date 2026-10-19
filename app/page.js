@@ -65,9 +65,9 @@ const EXAMPLE_ZIPS = [
 ];
 
 const RETURNS = [
-  ["Live Air Quality Index", "EPA AirNow"],
-  ["Temperature and a 10-year trend", "NOAA / ECMWF"],
-  ["Flood, heat and wind risk", "FEMA National Risk Index"],
+  ["Live Air Quality Index", "Open-Meteo Air Quality (Copernicus CAMS)"],
+  ["Temperature and a 10-year trend", "NOAA / ECMWF via Open-Meteo"],
+  ["Flood, heat and wind risk", "7-day forecast, NOAA / ECMWF"],
   ["Environmental-justice indicators", "EPA EJScreen"],
   ["Its 1930s redlining grade", "Mapping Inequality, Univ. of Richmond"],
 ];
@@ -93,10 +93,9 @@ const WEIGHTS = [
 ];
 
 const SOURCES = [
-  ["EPA AirNow", "Real-time Air Quality Index and pollutant data.", "https://www.airnow.gov/"],
-  ["EPA EJScreen", "Environmental-justice screening indicators and demographics.", "https://www.epa.gov/ejscreen"],
-  ["NOAA / ECMWF via Open-Meteo", "Current weather, forecasts and 10-year historical archives.", "https://open-meteo.com/"],
-  ["FEMA National Risk Index", "Flood, wind and natural-hazard risk assessments.", "https://hazards.fema.gov/nri/"],
+  ["Open-Meteo Air Quality", "Current AQI, PM2.5, PM10, NO\u2082 and ozone from the Copernicus CAMS model.", "https://open-meteo.com/en/docs/air-quality-api"],
+  ["EPA EJScreen", "Environmental-justice indicators. The EPA took the public tool offline in February 2025.", "https://www.epa.gov/ejscreen"],
+  ["NOAA / ECMWF via Open-Meteo", "Current weather, the 7-day forecast behind the flood and wind ratings, and 10-year archives.", "https://open-meteo.com/"],
   ["Mapping Inequality", "1930s HOLC redlining maps, digitized by the University of Richmond.", "https://dsl.richmond.edu/panorama/redlining/"],
   ["Zippopotam.us", "ZIP code to coordinate geocoding.", "https://www.zippopotam.us/"],
 ];
@@ -131,7 +130,7 @@ export default function Home() {
             <h1 className="display">The last mile between government data and community action.</h1>
             <p className="lede" style={{ color: "rgba(252,251,240,0.88)", maxWidth: 600 }}>
               Type a ZIP code to see its air quality, heat, flood risk, environmental-justice
-              indicators and redlining history, pulled live from the EPA, NOAA and FEMA.
+              indicators and redlining history, pulled live from public air-quality, weather and EPA sources.
             </p>
             <form onSubmit={handleSearch} className="zip-form">
               <input
@@ -171,7 +170,7 @@ export default function Home() {
       <section className="band band-cream" style={{ paddingTop: 44, paddingBottom: 44 }}>
         <div className="wrap stats-row">
           <div ref={tools.ref}><div className="n">{tools.count}</div><div className="eyebrow l">free tools</div></div>
-          <div ref={sources.ref}><div className="n">{sources.count}+</div><div className="eyebrow l">public data sources</div></div>
+          <div ref={sources.ref}><div className="n">{sources.count}</div><div className="eyebrow l">public data sources</div></div>
           <div ref={zips.ref}><div className="n">{zips.count.toLocaleString()}+</div><div className="eyebrow l">ZIP codes covered</div></div>
           <div><div className="n">0</div><div className="eyebrow l">accounts required</div></div>
         </div>

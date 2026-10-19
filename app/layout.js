@@ -10,7 +10,7 @@ const rubik = Rubik({ variable: "--font-rubik", subsets: ["latin"], weight: ["30
 
 export const metadata = {
   title: "Climate Lens — Environmental Data for Community Action",
-  description: "Open-source tool aggregating EPA, NOAA, and FEMA data into grant reports, classroom activities, and advocacy materials for nonprofits and community organizations.",
+  description: "Open-source tool turning public air-quality, weather and environmental-justice data into grant reports, classroom activities, and advocacy materials for nonprofits and community organizations.",
 };
 
 export default function RootLayout({ children }) {

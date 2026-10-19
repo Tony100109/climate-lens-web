@@ -32,7 +32,7 @@ export default function ActionPage() {
 
 I am writing as a concerned resident of ${area} to bring your attention to the climate vulnerabilities facing our community.
 
-According to real-time environmental data from EPA and NOAA sources, our area currently has:
+According to real-time air-quality and weather data from public sources, our area currently has:
 
 - An Air Quality Index of ${data.aqi.aqi} (${data.aqi.category})
 - A temperature that feels like ${data.weather?.feelsLike}°F

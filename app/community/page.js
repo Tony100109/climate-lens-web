@@ -167,7 +167,7 @@ Resident description:
 
 ${report.upvotes ? `${report.upvotes} community members have confirmed this issue.` : ""}
 
-This report was submitted through Climate Lens (climatelens.org), a tool that pairs community observations with real-time EPA and NOAA data. We urge you to investigate and take action.`;
+This report was submitted through Climate Lens (climatelens.org), a tool that pairs community observations with real-time air-quality and weather data. We urge you to investigate and take action.`;
   };
 
   const copyAdvocacy = async (report) => {
@@ -410,7 +410,7 @@ This report was submitted through Climate Lens (climatelens.org), a tool that pa
               <div style={{ textAlign: "center", padding: "40px 0" }}>
                 <h2 style={{ marginBottom: 8, fontSize: "1.4rem" }}>Report submitted.</h2>
                 <p style={{ color: "var(--text-muted)", marginBottom: 16, maxWidth: 460, margin: "0 auto 16px" }}>
-                  Your report is now paired with real-time EPA and NOAA data. When others confirm it,
+                  Your report is now paired with real-time air-quality and weather data. When others confirm it,
                   it becomes harder to dismiss. Share the link to get more eyes on it.
                 </p>
                 <div style={{ display: "flex", gap: 8, justifyContent: "center" }}>
@@ -593,7 +593,7 @@ ${i + 1}. "${r.title}"
 `).join("")}
 ${"=".repeat(50)}
 Data collected through Climate Lens (climatelens.org).
-Environmental data sourced from EPA AirNow and NOAA/ECMWF.
+Environmental data sourced from Open-Meteo (Copernicus CAMS air quality, NOAA/ECMWF weather).
 Community reports submitted by residents of ZIP ${statsZip}.`;
                     navigator.clipboard.writeText(text);
                   }}>

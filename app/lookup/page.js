@@ -503,7 +503,7 @@ function LookupContent() {
             </RevealDiv>
 
             <div style={{ marginTop: 24, color: "var(--text-dim)", fontSize: "0.85rem" }}>
-              Data sources: EPA AirNow, EPA EJScreen, NOAA/ECMWF via Open-Meteo, Mapping Inequality (University of Richmond)
+              Data sources: Open-Meteo Air Quality (Copernicus CAMS), NOAA/ECMWF via Open-Meteo, EPA EJScreen, Mapping Inequality (University of Richmond)
             </div>
           </>
         )}

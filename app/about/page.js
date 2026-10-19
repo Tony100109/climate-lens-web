@@ -4,10 +4,9 @@ import { Github, Mail, ArrowRight } from "lucide-react";
 
 export default function AboutPage() {
   const dataSources = [
-    { name: "EPA AirNow", desc: "Real-time air quality index and pollutant data" },
+    { name: "Open-Meteo Air Quality", desc: "Current AQI and pollutant data from the Copernicus CAMS model" },
     { name: "EPA EJScreen", desc: "Environmental justice screening indicators and demographics" },
-    { name: "NOAA/ECMWF via Open-Meteo", desc: "Current weather, forecasts, and 10-year historical archives" },
-    { name: "FEMA National Risk Index", desc: "Flood, wind, and natural hazard risk assessments" },
+    { name: "NOAA/ECMWF via Open-Meteo", desc: "Current weather, the 7-day forecast used for flood and wind ratings, and 10-year archives" },
     { name: "Mapping Inequality, UofR", desc: "1930s HOLC redlining maps digitized by University of Richmond" },
     { name: "Zippopotam.us", desc: "ZIP code to coordinates geocoding" },
   ];
@@ -43,7 +42,7 @@ export default function AboutPage() {
           </p>
           <p style={{ marginBottom: 20 }}>
             So I built Climate Lens. It pulls real-time data from the same public APIs the
-            government uses — EPA AirNow, EJScreen, NOAA weather data, the Mapping Inequality
+            government relies on — air-quality models, EJScreen, NOAA weather data, the Mapping Inequality
             redlining archive — and packages it into formats people actually need: grant reports,
             classroom activities, neighborhood comparisons, advocacy emails, and community
             evidence documentation.
