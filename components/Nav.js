@@ -82,7 +82,7 @@ export default function Nav() {
         {STANDALONE.map((item) => (
           <li key={item.href}><Link href={item.href}>{item.text}</Link></li>
         ))}
-        <li><Link href="/lookup" className="nav-cta">Get Started</Link></li>
+        <li><Link href="/lookup" className="nav-cta">Look up a ZIP</Link></li>
       </ul>
 
       {/* Mobile nav */}
@@ -115,8 +115,8 @@ export default function Nav() {
                 </Link>
               ))}
             </div>
-            <Link href="/lookup" className="btn btn-primary" style={{ margin: "16px 20px", textAlign: "center" }} onClick={() => setMobileOpen(false)}>
-              Get Started
+            <Link href="/lookup" className="btn btn-gold" style={{ margin: "16px 20px", textAlign: "center" }} onClick={() => setMobileOpen(false)}>
+              Look up a ZIP
             </Link>
           </div>
         </div>

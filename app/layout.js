@@ -1,10 +1,12 @@
-import { Geist, Geist_Mono } from "next/font/google";
+import { Piazzolla, Rubik } from "next/font/google";
 import "./globals.css";
+import "./theme.css";
 import Nav from "../components/Nav";
 import Footer from "../components/Footer";
 
-const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
-const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
+// Loaded through next/font so they are self-hosted; a remote @import in CSS is ignored by Next.
+const piazzolla = Piazzolla({ variable: "--font-piazzolla", subsets: ["latin"], weight: ["400", "500", "600"], style: ["normal", "italic"] });
+const rubik = Rubik({ variable: "--font-rubik", subsets: ["latin"], weight: ["300", "400", "500", "600"] });
 
 export const metadata = {
   title: "Climate Lens — Environmental Data for Community Action",
@@ -13,8 +15,8 @@ export const metadata = {
 
 export default function RootLayout({ children }) {
   return (
-    <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable}`}>
+    <html lang="en" className={`${piazzolla.variable} ${rubik.variable}`}>
+      <body>
         <Nav />
         {children}
         <Footer />

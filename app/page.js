@@ -2,10 +2,7 @@
 import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import {
-  Search, MapPin, GitCompare, Users, FileText, Heart,
-  TreePine, BookOpen, GraduationCap, Megaphone, Database
-} from "lucide-react";
+import { Search } from "lucide-react";
 
 function useCountUp(end, duration = 1600) {
   const [count, setCount] = useState(0);
@@ -60,169 +57,232 @@ function RevealDiv({ children, className = "", delay = 0, style }) {
   );
 }
 
+const EXAMPLE_ZIPS = [
+  { zip: "10451", label: "Bronx, NY" },
+  { zip: "90011", label: "South LA" },
+  { zip: "60621", label: "Englewood, Chicago" },
+  { zip: "94124", label: "Bayview, SF" },
+];
+
+const RETURNS = [
+  ["Live Air Quality Index", "EPA AirNow"],
+  ["Temperature and a 10-year trend", "NOAA / ECMWF"],
+  ["Flood, heat and wind risk", "FEMA National Risk Index"],
+  ["Environmental-justice indicators", "EPA EJScreen"],
+  ["Its 1930s redlining grade", "Mapping Inequality, Univ. of Richmond"],
+];
+
+const TOOLS = [
+  { n: "01", cat: "Research", title: "Climate Lookup", desc: "Real-time AQI, temperature, risk scores, 10-year trends, EJScreen data and historical redlining for any US ZIP code.", href: "/lookup" },
+  { n: "02", cat: "Research", title: "Compare Areas", desc: "Two ZIP codes side by side, with the difference on every indicator and pre-loaded disparity examples.", href: "/compare" },
+  { n: "03", cat: "Grants", title: "Impact Report", desc: "A downloadable PDF comparing a green space with a nearby area, with an executive summary for funders.", href: "/impact" },
+  { n: "04", cat: "Policy", title: "Health Cost Calculator", desc: "Estimated annual health costs from air pollution and heat per 1,000 residents, using EPA and CDC methodology.", href: "/health-cost" },
+  { n: "05", cat: "Organizing", title: "Community Evidence Board", desc: "Resident reports paired with real-time EPA and NOAA data, with upvoting and exportable advocacy packets.", href: "/community" },
+  { n: "06", cat: "Planning", title: "Tree Calculator", desc: "Trees needed, CO₂ absorption, costs and payback for a site, with grant-ready language.", href: "/tree-calculator" },
+  { n: "07", cat: "Civic", title: "Take Action", desc: "Find your representatives and send a pre-written email filled in with your local data.", href: "/action" },
+  { n: "08", cat: "Education", title: "Reference Library", desc: "A plain-language glossary and articles on AQI, PM2.5, heat islands, redlining and green infrastructure.", href: "/learn" },
+  { n: "09", cat: "K-12", title: "Classroom Toolkit", desc: "Four NGSS-aligned lesson plans for grades 6–12 where students compare their own neighborhoods.", href: "/classroom" },
+];
+
+const WEIGHTS = [
+  { label: "Air quality", pct: 30, bg: "#2E8B57", fg: "#FFFFFF" },
+  { label: "Heat risk", pct: 25, bg: "#4FA06C", fg: "#FFFFFF" },
+  { label: "Flood risk", pct: 20, bg: "#7DBB8F", fg: "#0F3D26" },
+  { label: "Wind risk", pct: 12.5, bg: "#A9D3B2", fg: "#0F3D26" },
+  { label: "EJ baseline", pct: 12.5, bg: "#D4EAD5", fg: "#0F3D26" },
+];
+
+const SOURCES = [
+  ["EPA AirNow", "Real-time Air Quality Index and pollutant data.", "https://www.airnow.gov/"],
+  ["EPA EJScreen", "Environmental-justice screening indicators and demographics.", "https://www.epa.gov/ejscreen"],
+  ["NOAA / ECMWF via Open-Meteo", "Current weather, forecasts and 10-year historical archives.", "https://open-meteo.com/"],
+  ["FEMA National Risk Index", "Flood, wind and natural-hazard risk assessments.", "https://hazards.fema.gov/nri/"],
+  ["Mapping Inequality", "1930s HOLC redlining maps, digitized by the University of Richmond.", "https://dsl.richmond.edu/panorama/redlining/"],
+  ["Zippopotam.us", "ZIP code to coordinate geocoding.", "https://www.zippopotam.us/"],
+];
+
 export default function Home() {
   const [zip, setZip] = useState("");
+  const [error, setError] = useState("");
   const router = useRouter();
 
   const tools = useCountUp(9);
   const sources = useCountUp(5);
   const zips = useCountUp(41000);
-  const open = useCountUp(100);
 
   const handleSearch = (e) => {
     e.preventDefault();
     const cleaned = zip.trim();
-    if (/^\d{5}$/.test(cleaned)) {
-      router.push(`/lookup?zip=${cleaned}`);
+    if (!/^\d{5}$/.test(cleaned)) {
+      setError("Enter a 5-digit US ZIP code.");
+      return;
     }
+    setError("");
+    router.push(`/lookup?zip=${cleaned}`);
   };
-
-  const features = [
-    { icon: <MapPin size={20} />, title: "Climate Lookup", desc: "Real-time AQI, temperature, risk scores, 10-year trends, EJScreen data, and historical redlining for any US ZIP code.", tag: "Research", href: "/lookup" },
-    { icon: <GitCompare size={20} />, title: "Compare Areas", desc: "Side-by-side environmental comparison of two ZIP codes with differential analysis and pre-loaded disparity examples.", tag: "Advocacy", href: "/compare" },
-    { icon: <Users size={20} />, title: "Community Evidence Board", desc: "Citizen-submitted observations paired with real-time EPA/NOAA data. Includes upvoting and exportable advocacy packets.", tag: "Organizing", href: "/community" },
-    { icon: <FileText size={20} />, title: "Impact Report", desc: "Generate downloadable PDFs comparing green space metrics against nearby areas with executive summaries for funders.", tag: "Grants", href: "/impact" },
-    { icon: <Heart size={20} />, title: "Health Cost Calculator", desc: "Estimate annual health costs from air quality and heat exposure per 1,000 residents using EPA and CDC methodology.", tag: "Policy", href: "/health-cost" },
-    { icon: <TreePine size={20} />, title: "Tree ROI Calculator", desc: "Calculate CO2 absorption, costs, and payback periods for tree initiatives with grant-ready language.", tag: "Planning", href: "/tree-calculator" },
-    { icon: <BookOpen size={20} />, title: "Reference Library", desc: "Glossary and articles on AQI, PM2.5, urban heat islands, environmental justice, and green infrastructure.", tag: "Education", href: "/learn" },
-    { icon: <GraduationCap size={20} />, title: "Classroom Toolkit", desc: "NGSS-aligned lesson plans for grades 6-12 using live data. Students compare their own neighborhoods in real time.", tag: "K-12", href: "/classroom" },
-    { icon: <Megaphone size={20} />, title: "Take Action", desc: "Representative lookup, pre-written advocacy emails with local data, and shareable social media templates.", tag: "Civic", href: "/action" },
-  ];
 
   return (
     <div className="page">
-      {/* Hero */}
-      <section className="hero">
-        <div className="hero-content">
-          <h1>Climate Lens</h1>
-          <p className="hero-subtitle">
-            An open-source research tool that aggregates environmental data from the EPA, NOAA, and
-            FEMA into actionable formats for community organizations, educators, and advocates.
-          </p>
-          <form onSubmit={handleSearch} className="hero-search">
-            <input
-              className="input"
-              placeholder="Enter ZIP code"
-              value={zip}
-              onChange={(e) => setZip(e.target.value.replace(/[^0-9]/g, "").slice(0, 5))}
-              maxLength={5}
-            />
-            <button type="submit" className="btn btn-gold btn-large" style={{ flexShrink: 0 }}>
-              <Search size={16} /> Explore
-            </button>
-          </form>
-          <div className="hero-badges">
-            <span className="hero-badge">Free &amp; open source</span>
-            <span className="hero-badge">No account required</span>
-            <span className="hero-badge">Real-time data</span>
+      {/* Hero: the ZIP search is the main action */}
+      <section className="band band-forest" style={{ paddingTop: 56, paddingBottom: 80 }}>
+        <div className="wrap split">
+          <div>
+            <span className="eyebrow">An open-source climate research tool</span>
+            <h1 className="display">The last mile between government data and community action.</h1>
+            <p className="lede" style={{ color: "rgba(252,251,240,0.88)", maxWidth: 600 }}>
+              Type a ZIP code to see its air quality, heat, flood risk, environmental-justice
+              indicators and redlining history, pulled live from the EPA, NOAA and FEMA.
+            </p>
+            <form onSubmit={handleSearch} className="zip-form">
+              <input
+                className="input"
+                placeholder="Enter a ZIP code"
+                inputMode="numeric"
+                aria-label="ZIP code"
+                value={zip}
+                onChange={(e) => { setZip(e.target.value.replace(/[^0-9]/g, "").slice(0, 5)); setError(""); }}
+                maxLength={5}
+              />
+              <button type="submit" className="btn btn-gold btn-large" style={{ flexShrink: 0 }}>
+                <Search size={16} /> Look it up
+              </button>
+            </form>
+            {error && <p className="zip-error">{error}</p>}
+            <p className="zip-examples">
+              Or try:{" "}
+              {EXAMPLE_ZIPS.map((z) => (
+                <Link key={z.zip} href={`/lookup?zip=${z.zip}`}>{z.label} ({z.zip})</Link>
+              ))}
+            </p>
+            <p className="muted-mint" style={{ marginTop: 18 }}>Free and open source. No account, no paywall, no ads.</p>
+          </div>
+          <div>
+            <span className="eyebrow">One ZIP code returns</span>
+            <ul className="returns" style={{ marginTop: 14 }}>
+              {RETURNS.map(([what, src]) => (
+                <li key={what}><strong>{what}</strong><span>{src}</span></li>
+              ))}
+            </ul>
           </div>
         </div>
       </section>
 
-      {/* Stats */}
-      <div className="container" style={{ paddingTop: 40, paddingBottom: 40 }}>
-        <div className="stats-bar">
-          <div className="stat-item" ref={tools.ref}>
-            <div className="stat-number">{tools.count}</div>
-            <div className="stat-label">Free Tools</div>
-          </div>
-          <div className="stat-item" ref={sources.ref}>
-            <div className="stat-number">{sources.count}+</div>
-            <div className="stat-label">Data Sources</div>
-          </div>
-          <div className="stat-item" ref={zips.ref}>
-            <div className="stat-number">{zips.count.toLocaleString()}+</div>
-            <div className="stat-label">ZIP Codes</div>
-          </div>
-          <div className="stat-item" ref={open.ref}>
-            <div className="stat-number">{open.count}%</div>
-            <div className="stat-label">Open Source</div>
-          </div>
+      {/* Numbers */}
+      <section className="band band-cream" style={{ paddingTop: 44, paddingBottom: 44 }}>
+        <div className="wrap stats-row">
+          <div ref={tools.ref}><div className="n">{tools.count}</div><div className="eyebrow l">free tools</div></div>
+          <div ref={sources.ref}><div className="n">{sources.count}+</div><div className="eyebrow l">public data sources</div></div>
+          <div ref={zips.ref}><div className="n">{zips.count.toLocaleString()}+</div><div className="eyebrow l">ZIP codes covered</div></div>
+          <div><div className="n">0</div><div className="eyebrow l">accounts required</div></div>
         </div>
-      </div>
+      </section>
 
-      {/* Features */}
-      <div className="container" style={{ paddingBottom: 40 }}>
-        <div style={{ marginBottom: 12, display: "flex", alignItems: "center", gap: 12 }}>
-          <h2 style={{ fontSize: "0.78em", fontWeight: 600, textTransform: "uppercase", letterSpacing: "1.5px", color: "var(--gray-400)", margin: 0 }}>Available Tools</h2>
-          <div className="divider" style={{ flex: 1, maxWidth: 200 }}></div>
-        </div>
+      {/* Who it is for */}
+      <section className="band band-sage">
+        <RevealDiv className="wrap">
+          <h2 className="h2">Built for the people who need the data most.</h2>
+          <div className="vignettes">
+            <div><span className="eyebrow">The grant writer</span><p>A botanical garden director applying for a grant shouldn&rsquo;t need to navigate three federal databases to prove her green space improves local air quality.</p></div>
+            <div><span className="eyebrow">The teacher</span><p>A teacher planning an environmental justice lesson shouldn&rsquo;t need a data science background to show students that some neighborhoods breathe worse air than others.</p></div>
+            <div><span className="eyebrow">The resident</span><p>A resident going to a city council meeting shouldn&rsquo;t need to write a research paper to argue that their block needs more trees.</p></div>
+          </div>
+        </RevealDiv>
+      </section>
 
-        <div className="grid-3" style={{ marginTop: 16 }}>
-          {features.map((f, i) => (
-            <RevealDiv key={f.title} delay={i % 3}>
-              <Link href={f.href} style={{ textDecoration: "none", display: "block" }}>
-                <div className="feature-card" style={{ height: "100%" }}>
-                  <div className="feature-card-icon" style={{ background: "rgba(95,168,211,0.12)", color: "var(--ocean)" }}>
-                    {f.icon}
-                  </div>
-                  <h3>{f.title}</h3>
-                  <p>{f.desc}</p>
-                  <span className="feature-card-tag">{f.tag}</span>
-                </div>
-              </Link>
-            </RevealDiv>
-          ))}
+      {/* Toolkit */}
+      <section className="band band-cream">
+        <div className="wrap">
+          <div className="split-bottom">
+            <div>
+              <span className="eyebrow">The toolkit</span>
+              <h2 className="h2" style={{ marginTop: 10 }}>Nine tools.<br />One ZIP code.</h2>
+            </div>
+            <p className="lede" style={{ color: "var(--gray-700)" }}>
+              Each tool takes the same public data and shapes it for a different job: a funder,
+              a classroom, a council meeting or a block association.
+            </p>
+          </div>
+          <div className="toolgrid">
+            {TOOLS.map((t, i) => (
+              <RevealDiv key={t.title} delay={i % 3}>
+                <Link href={t.href} className="tool">
+                  <span className="num">{t.n}</span>
+                  <span className="cat">{t.cat}</span>
+                  <h3>{t.title}</h3>
+                  <p>{t.desc}</p>
+                  <span className="go">Open tool &rarr;</span>
+                </Link>
+              </RevealDiv>
+            ))}
+          </div>
         </div>
-      </div>
-
-      {/* Data sources */}
-      <RevealDiv className="container" style={{ paddingBottom: 40 }}>
-        <div style={{ marginBottom: 12, display: "flex", alignItems: "center", gap: 12 }}>
-          <h2 style={{ fontSize: "0.78em", fontWeight: 600, textTransform: "uppercase", letterSpacing: "1.5px", color: "var(--gray-400)", margin: 0 }}>Powered By</h2>
-          <div className="divider" style={{ flex: 1, maxWidth: 200 }}></div>
-        </div>
-        <div className="trust-bar" style={{ justifyContent: "flex-start", padding: "16px 0" }}>
-          <span className="trust-item"><Database size={13} /> EPA AirNow</span>
-          <span className="trust-item"><Database size={13} /> EPA EJScreen</span>
-          <span className="trust-item"><Database size={13} /> NOAA/ECMWF</span>
-          <span className="trust-item"><Database size={13} /> FEMA NRI</span>
-          <span className="trust-item"><Database size={13} /> Mapping Inequality</span>
-        </div>
-      </RevealDiv>
+      </section>
 
       {/* Methodology */}
-      <RevealDiv className="container" style={{ paddingBottom: 40 }}>
-        <div style={{ marginBottom: 12, display: "flex", alignItems: "center", gap: 12 }}>
-          <h2 style={{ fontSize: "0.78em", fontWeight: 600, textTransform: "uppercase", letterSpacing: "1.5px", color: "var(--gray-400)", margin: 0 }}>Methodology</h2>
-          <div className="divider" style={{ flex: 1, maxWidth: 200 }}></div>
-        </div>
-        <div style={{ fontSize: "0.9rem", color: "var(--gray-500)", lineHeight: 1.8 }}>
-          <p style={{ marginBottom: 12 }}>
-            Climate Lens retrieves data from public APIs in real time. No data is pre-cached or
-            modeled. The Climate Vulnerability Score is a composite index (0-100) weighted as follows:
-            air quality (30%), heat risk (25%), flood risk (20%), wind risk (12.5%), and an estimated
-            environmental justice baseline (12.5%). Higher scores indicate greater vulnerability.
-          </p>
-          <p>
-            This tool supplements established environmental assessment tools such as{" "}
+      <section className="band band-forest">
+        <RevealDiv className="wrap">
+          <div className="split-bottom" style={{ marginBottom: 0 }}>
+            <div>
+              <span className="eyebrow">Methodology</span>
+              <h2 className="h2" style={{ marginTop: 10, color: "var(--cream)" }}>How the Climate Vulnerability Score is built.</h2>
+            </div>
+            <p className="lede" style={{ color: "rgba(252,251,240,0.88)" }}>
+              A composite index from 0 to 100, computed from data pulled at the moment you search.
+              Nothing is pre-cached or modeled. Higher scores mean greater vulnerability.
+            </p>
+          </div>
+          <div className="weights" role="img" aria-label="Score weights: air quality 30%, heat risk 25%, flood risk 20%, wind risk 12.5%, environmental-justice baseline 12.5%">
+            {WEIGHTS.map((w) => (
+              <div key={w.label} style={{ flexBasis: `${w.pct}%`, background: w.bg, color: w.fg }}>
+                <b>{w.pct}%</b><span>{w.label}</span>
+              </div>
+            ))}
+          </div>
+          <p className="muted-mint" style={{ marginTop: 24, maxWidth: 820 }}>
+            Climate Lens supplements established tools such as{" "}
             <a href="https://www.epa.gov/ejscreen" target="_blank" rel="noopener noreferrer">EPA EJScreen</a>,
-            the <a href="https://climatevulnerabilityindex.org/" target="_blank" rel="noopener noreferrer">U.S. Climate Vulnerability Index</a>,
-            and the <a href="https://screeningtool.geoplatform.gov/" target="_blank" rel="noopener noreferrer">CEJST</a>.
-            Its contribution is translating the same underlying data into output formats
-            that existing tools do not provide.
+            the <a href="https://climatevulnerabilityindex.org/" target="_blank" rel="noopener noreferrer">U.S. Climate Vulnerability Index</a> and{" "}
+            <a href="https://screeningtool.geoplatform.gov/" target="_blank" rel="noopener noreferrer">CEJST</a>.
+            Its contribution is translating the same underlying data into formats those tools don&rsquo;t provide.
           </p>
-        </div>
-      </RevealDiv>
+        </RevealDiv>
+      </section>
+
+      {/* Data sources */}
+      <section className="band band-sage">
+        <RevealDiv className="wrap split" style={{ alignItems: "start" }}>
+          <div>
+            <span className="eyebrow">Powered by</span>
+            <h2 className="h2" style={{ marginTop: 10 }}>Public data, made usable.</h2>
+            <p className="lede" style={{ color: "var(--gray-700)", marginTop: 16 }}>
+              Every number comes from a free, public source. Nothing is stored except the community
+              reports people choose to submit.
+            </p>
+          </div>
+          <div className="sources">
+            {SOURCES.map(([name, desc, url]) => (
+              <div key={name}>
+                <a href={url} target="_blank" rel="noopener noreferrer">{name}</a>
+                <p>{desc}</p>
+              </div>
+            ))}
+          </div>
+        </RevealDiv>
+      </section>
 
       {/* CTA */}
-      <RevealDiv className="container" style={{ paddingBottom: 48 }}>
-        <div className="cta-section">
-          <h2>Ready to use climate data for good?</h2>
-          <p>
-            Free, open source, and built for organizations making a difference.
-            No account required — just enter a ZIP code.
-          </p>
-          <div className="cta-buttons">
-            <Link href="/lookup" className="btn btn-gold btn-large">
-              <Search size={16} /> Start Exploring
-            </Link>
-            <Link href="/about" className="btn btn-ghost btn-large">
-              Learn More →
-            </Link>
+      <section className="band band-leaf" style={{ paddingTop: 56, paddingBottom: 56 }}>
+        <div className="wrap cta-row">
+          <div>
+            <h2 className="h2" style={{ color: "var(--cream)" }}>Start with your own ZIP code.</h2>
+            <p style={{ color: "rgba(252,251,240,0.85)", marginTop: 8 }}>Free, open source and built for organizations making a difference.</p>
+          </div>
+          <div className="cta-buttons-row">
+            <Link href="/lookup" className="btn btn-gold btn-large"><Search size={16} /> Open Climate Lookup</Link>
+            <a href="https://github.com/Tony100109/climate-lens-web" target="_blank" rel="noopener noreferrer" className="btn btn-line btn-large">Code on GitHub</a>
           </div>
         </div>
-      </RevealDiv>
+      </section>
     </div>
   );
 }
