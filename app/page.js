@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import {
@@ -7,9 +7,67 @@ import {
   TreePine, BookOpen, GraduationCap, Megaphone, Database
 } from "lucide-react";
 
+function useCountUp(end, duration = 1600) {
+  const [count, setCount] = useState(0);
+  const ref = useRef(null);
+  const started = useRef(false);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(([entry]) => {
+      if (entry.isIntersecting && !started.current) {
+        started.current = true;
+        const startTime = performance.now();
+        const tick = (now) => {
+          const progress = Math.min((now - startTime) / duration, 1);
+          const eased = 1 - Math.pow(1 - progress, 3);
+          setCount(Math.round(eased * end));
+          if (progress < 1) requestAnimationFrame(tick);
+        };
+        requestAnimationFrame(tick);
+        obs.unobserve(el);
+      }
+    }, { threshold: 0.3 });
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, [end, duration]);
+
+  return { count, ref };
+}
+
+function useReveal() {
+  const ref = useRef(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { el.classList.add("visible"); obs.unobserve(el); } },
+      { threshold: 0.1 }
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+  return ref;
+}
+
+function RevealDiv({ children, className = "", delay = 0, style }) {
+  const ref = useReveal();
+  return (
+    <div ref={ref} className={`reveal ${delay ? `reveal-delay-${delay}` : ""} ${className}`} style={style}>
+      {children}
+    </div>
+  );
+}
+
 export default function Home() {
   const [zip, setZip] = useState("");
   const router = useRouter();
+
+  const tools = useCountUp(9);
+  const sources = useCountUp(5);
+  const zips = useCountUp(41000);
+  const open = useCountUp(100);
 
   const handleSearch = (e) => {
     e.preventDefault();
@@ -64,20 +122,20 @@ export default function Home() {
       {/* Stats */}
       <div className="container" style={{ paddingTop: 40, paddingBottom: 40 }}>
         <div className="stats-bar">
-          <div className="stat-item">
-            <div className="stat-number">9</div>
+          <div className="stat-item" ref={tools.ref}>
+            <div className="stat-number">{tools.count}</div>
             <div className="stat-label">Free Tools</div>
           </div>
-          <div className="stat-item">
-            <div className="stat-number">5+</div>
+          <div className="stat-item" ref={sources.ref}>
+            <div className="stat-number">{sources.count}+</div>
             <div className="stat-label">Data Sources</div>
           </div>
-          <div className="stat-item">
-            <div className="stat-number">41,000+</div>
+          <div className="stat-item" ref={zips.ref}>
+            <div className="stat-number">{zips.count.toLocaleString()}+</div>
             <div className="stat-label">ZIP Codes</div>
           </div>
-          <div className="stat-item">
-            <div className="stat-number">100%</div>
+          <div className="stat-item" ref={open.ref}>
+            <div className="stat-number">{open.count}%</div>
             <div className="stat-label">Open Source</div>
           </div>
         </div>
@@ -91,23 +149,25 @@ export default function Home() {
         </div>
 
         <div className="grid-3" style={{ marginTop: 16 }}>
-          {features.map((f) => (
-            <Link key={f.title} href={f.href} style={{ textDecoration: "none" }}>
-              <div className="feature-card" style={{ height: "100%" }}>
-                <div className="feature-card-icon" style={{ background: "rgba(95,168,211,0.12)", color: "var(--ocean)" }}>
-                  {f.icon}
+          {features.map((f, i) => (
+            <RevealDiv key={f.title} delay={i % 3}>
+              <Link href={f.href} style={{ textDecoration: "none", display: "block" }}>
+                <div className="feature-card" style={{ height: "100%" }}>
+                  <div className="feature-card-icon" style={{ background: "rgba(95,168,211,0.12)", color: "var(--ocean)" }}>
+                    {f.icon}
+                  </div>
+                  <h3>{f.title}</h3>
+                  <p>{f.desc}</p>
+                  <span className="feature-card-tag">{f.tag}</span>
                 </div>
-                <h3>{f.title}</h3>
-                <p>{f.desc}</p>
-                <span className="feature-card-tag">{f.tag}</span>
-              </div>
-            </Link>
+              </Link>
+            </RevealDiv>
           ))}
         </div>
       </div>
 
       {/* Data sources */}
-      <div className="container" style={{ paddingBottom: 40 }}>
+      <RevealDiv className="container" style={{ paddingBottom: 40 }}>
         <div style={{ marginBottom: 12, display: "flex", alignItems: "center", gap: 12 }}>
           <h2 style={{ fontSize: "0.78em", fontWeight: 600, textTransform: "uppercase", letterSpacing: "1.5px", color: "var(--gray-400)", margin: 0 }}>Powered By</h2>
           <div className="divider" style={{ flex: 1, maxWidth: 200 }}></div>
@@ -119,10 +179,10 @@ export default function Home() {
           <span className="trust-item"><Database size={13} /> FEMA NRI</span>
           <span className="trust-item"><Database size={13} /> Mapping Inequality</span>
         </div>
-      </div>
+      </RevealDiv>
 
       {/* Methodology */}
-      <div className="container" style={{ paddingBottom: 40 }}>
+      <RevealDiv className="container" style={{ paddingBottom: 40 }}>
         <div style={{ marginBottom: 12, display: "flex", alignItems: "center", gap: 12 }}>
           <h2 style={{ fontSize: "0.78em", fontWeight: 600, textTransform: "uppercase", letterSpacing: "1.5px", color: "var(--gray-400)", margin: 0 }}>Methodology</h2>
           <div className="divider" style={{ flex: 1, maxWidth: 200 }}></div>
@@ -143,10 +203,10 @@ export default function Home() {
             that existing tools do not provide.
           </p>
         </div>
-      </div>
+      </RevealDiv>
 
       {/* CTA */}
-      <div className="container" style={{ paddingBottom: 48 }}>
+      <RevealDiv className="container" style={{ paddingBottom: 48 }}>
         <div className="cta-section">
           <h2>Ready to use climate data for good?</h2>
           <p>
@@ -162,7 +222,7 @@ export default function Home() {
             </Link>
           </div>
         </div>
-      </div>
+      </RevealDiv>
     </div>
   );
 }
